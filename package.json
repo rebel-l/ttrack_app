@@ -2,18 +2,17 @@
   "name": "ttrack_app",
   "version": "1.0.0",
   "description": "Web application for time tracking.",
-  "main": "./src/index.tsx",
   "dependencies": {
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "add": "^2.0.6",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "ts-loader": "^9.2.6",
-    "webpack": "^5.65.0",
-    "webpack-cli": "^4.9.1"
+    "react-dom": "^17.0.2"
   },
   "scripts": {
-    "build": "webpack",
+    "serve": "webpack-cli serve --mode=development --env development --open --hot",
+    "build": "webpack --mode=production --env production --progress",
+    "lint": "eslint ./src/**/*.{ts,tsx} --quiet --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,5 +24,29 @@
   "bugs": {
     "url": "https://github.com/rebel-l/ttrack_app/issues"
   },
-  "homepage": "https://github.com/rebel-l/ttrack_app#readme"
+  "homepage": "https://github.com/rebel-l/ttrack_app#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.8",
+    "@types/webpack": "^5.28.0",
+    "@types/webpack-dev-server": "^4.7.2",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "css-loader": "^6.5.1",
+    "eslint": "^8.6.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-react-redux": "^3.3.4",
+    "fork-ts-checker-webpack-plugin": "^6.5.0",
+    "html-webpack-plugin": "^5.5.0",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^12.4.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths-webpack-plugin": "^3.5.2",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.3"
+  }
 }

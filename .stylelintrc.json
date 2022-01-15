@@ -1,0 +1,72 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-sass-guidelines"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "scss/at-each-key-value-single-line": true,
+    "scss/at-else-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-else-closing-brace-space-after": "always-intermediate",
+    "scss/at-else-empty-line-before": "never",
+    "scss/at-else-if-parentheses-space-before": "always",
+    "scss/at-function-named-arguments": "always",
+    "scss/at-function-parentheses-space-before": "always",
+    "scss/at-if-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-if-closing-brace-space-after": "always-intermediate",
+    "scss/at-if-no-null": true,
+    "scss/at-mixin-argumentless-call-parentheses": "always",
+    "scss/at-mixin-named-arguments": "always",
+    "scss/at-mixin-parentheses-space-before": "always",
+    "scss/dollar-variable-colon-newline-after": "always-multi-line",
+    "scss/dollar-variable-first-in-block": [
+      true,
+      {
+        "ignore": [
+          "comments",
+          "imports"
+        ]
+      }
+    ],
+    "scss/dollar-variable-no-missing-interpolation": true,
+    "scss/double-slash-comment-empty-line-before": "always",
+    "scss/comment-no-empty": true,
+    "scss/declaration-nested-properties": "never",
+    "scss/declaration-nested-properties-no-divided-groups": true,
+    "scss/dimension-no-non-numeric-values": true,
+    "scss/function-color-relative": true,
+    "scss/function-quote-no-quoted-strings-inside": true,
+    "scss/function-unquote-no-unquoted-strings-inside": true,
+    "scss/map-keys-quotes": "always",
+    "scss/media-feature-value-dollar-variable": "always",
+    "scss/operator-no-newline-after": true,
+    "scss/operator-no-newline-before": true,
+    "scss/operator-no-unspaced": true,
+    "scss/partial-no-import": true,
+    "scss/selector-no-union-class-name": true,
+    "scss/no-duplicate-dollar-variables": [
+      true,
+      {
+        "ignoreInside": [
+          "at-rule",
+          "nested-at-rule"
+        ],
+        "ignoreInsideAtRules": [
+          "if",
+          "mixin"
+        ]
+      }
+    ],
+    "scss/no-duplicate-mixins": true,
+    "scss/no-global-function-names": true,
+    "selector-class-pattern": [
+      "^[a-zA-Z0-9]+$",
+      {
+        "message":
+        "Selector should be written in camelCase without hyphens to be usable in JSX components (selector-class-pattern)"
+      }
+    ]
+  }
+}

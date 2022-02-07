@@ -1,13 +1,15 @@
+import "./App.scss";
+
 import * as React from "react";
 
-const App: React.FC = () => {
-    const greeting = "Hello Function Component!";
+import { Container, Row } from "react-bootstrap";
+import Player from "./player/Player";
 
-    return (
-        <h1>
-            {greeting}
-        </h1>
-    );
-};
+
+const App: React.FC = () => (
+    <Container fluid={true}>
+        <Player />
+    </Container>
+)
 
 export default App;

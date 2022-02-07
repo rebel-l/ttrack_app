@@ -36,9 +36,10 @@
     "camelcase": "error",
     "capitalized-comments": "error",
     "class-methods-use-this": [
-      "error",
+      "warn",
       {
         "exceptMethods": [
+          "render",
           "shouldComponentUpdate"
         ]
       }
@@ -410,6 +411,7 @@
     "symbol-description": "error",
     "template-curly-spacing": "error",
     "template-tag-spacing": "warn",
+    "@typescript-eslint/ban-types": "warn",
     "unicode-bom": "error",
     "vars-on-top": "error",
     "wrap-iife": "error",

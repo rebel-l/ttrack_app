@@ -4,6 +4,7 @@ import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
 import { Locations } from "../../models/Location";
 import React from "react";
+import { save } from "../../service/timelogs";
 import { TimeLogs } from "../../models/TimeLogs";
 
 interface IState {
@@ -22,6 +23,7 @@ const buttonVariant = (canCLick : boolean) : string => {
         return variant;
     },
     labelBreak = "Break",
+    labelLocation = "Working from: ",
     labelStart = "Start",
     labelStop = "Stop";
 
@@ -73,7 +75,8 @@ class Player extends React.Component<unknown, IState> {
             Location: location,
         });
 
-        this.setState({ timeLogs });
+        save(timeLogs);
+        this.setState({timeLogs}); // TODO: use redux
     }
 
     canBreak () : boolean {
@@ -104,7 +107,8 @@ class Player extends React.Component<unknown, IState> {
             Location: location,
         });
 
-        this.setState({ timeLogs });
+        save(timeLogs);
+        this.setState({timeLogs}); // TODO: use redux
     }
 
     canStart () : boolean {
@@ -123,7 +127,8 @@ class Player extends React.Component<unknown, IState> {
 
         timeLogs[timeLogs.length - 1].Stop = new Date();
 
-        this.setState({ timeLogs });
+        save(timeLogs);
+        this.setState({timeLogs}); // TODO: use redux
     }
 
     canStop () : boolean {
@@ -140,13 +145,19 @@ class Player extends React.Component<unknown, IState> {
         const { locationOptions } = this.state;
 
         return (
+            // TODO: use icons instead of button labels
             <div className="justify-content-center">
-                <Form.Select
-                    onChange={this.handleLocation}
-                    size="lg"
-                >
-                    {locationOptions}
-                </Form.Select>
+                <div>
+                    <span>
+                        {labelLocation}
+                    </span>
+                    <Form.Select
+                        onChange={this.handleLocation}
+                        size="sm"
+                    >
+                        {locationOptions}
+                    </Form.Select>
+                </div>
                 <Button
                     onClick={this.handleStart}
                     size="lg"

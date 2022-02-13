@@ -1,4 +1,4 @@
-type Timelog = {
+export type TimeLog = {
     ID?: string;
     Start: Date;
     Stop?: Date;
@@ -8,4 +8,4 @@ type Timelog = {
     ModifiedAt?: Date;
 };
 
-export default Timelog;
+export type TimeLogs = TimeLog[];

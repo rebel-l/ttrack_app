@@ -192,7 +192,14 @@
     "no-lonely-if": "error",
     "no-loop-func": "error",
     "no-loss-of-precision": "error",
-    "no-magic-numbers": "error",
+    "no-magic-numbers": [
+      "error",
+      {
+        "ignoreDefaultValues": true,
+        "ignore": [0,1],
+        "detectObjects": true
+      }
+    ],
     "no-mixed-operators": "warn",
     "no-mixed-spaces-and-tabs": "error",
     "no-multi-assign": "error",

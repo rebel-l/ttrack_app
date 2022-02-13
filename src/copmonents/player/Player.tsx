@@ -2,17 +2,30 @@ import { Button } from "react-bootstrap";
 
 import React from "react";
 
-import Timelog from "../../models/Timelog";
+import { TimeLogs } from "../../models/TimeLog";
 
 interface IState {
-    timeLogs: Timelog[]
+    timeLogs: TimeLogs
 }
+
+const buttonVariant = (canCLick : boolean) : string => {
+        let variant = "primary";
+
+        if (!canCLick) {
+            variant = "secondary";
+        }
+
+        return variant;
+    },
+    labelBreak = "Break",
+    labelStart = "Start",
+    labelStop = "Stop";
 
 class Player extends React.Component<unknown, IState> {
     constructor (props) {
         super(props);
 
-        this.state = { timeLogs: [] as Timelog[] };
+        this.state = { timeLogs: [] as TimeLogs };
 
         this.handleBreak = this.handleBreak.bind(this);
         this.handleStart = this.handleStart.bind(this);
@@ -36,7 +49,7 @@ class Player extends React.Component<unknown, IState> {
             return;
         }
 
-        timeLogs[timeLogs.length-1].Stop = new Date();
+        timeLogs[timeLogs.length - 1].Stop = new Date();
 
         timeLogs.push({
             Start: new Date(),
@@ -44,15 +57,14 @@ class Player extends React.Component<unknown, IState> {
             Location: "home",
         });
 
-        this.setState({timeLogs: timeLogs});
+        this.setState({ timeLogs });
     }
 
     canBreak () : boolean {
-        const { timeLogs } = this.state;
+        const { timeLogs } = this.state,
+            last = timeLogs[timeLogs.length - 1];
 
-        const last = timeLogs[timeLogs.length-1];
-
-        return timeLogs.length > 0 && last.Stop === undefined && last.Reason !== "break";
+        return timeLogs.length > 0 && typeof last.Stop === "undefined" && last.Reason !== "break";
     }
 
     handleStart () : void {
@@ -63,8 +75,9 @@ class Player extends React.Component<unknown, IState> {
         }
 
         if (timeLogs.length > 0) {
-            const last = timeLogs[timeLogs.length-1];
-            if (last.Stop === undefined && last.Reason === "break") {
+            const last = timeLogs[timeLogs.length - 1];
+
+            if (typeof last.Stop === "undefined" && last.Reason === "break") {
                 last.Stop = new Date();
             }
         }
@@ -75,33 +88,32 @@ class Player extends React.Component<unknown, IState> {
             Location: "home",
         });
 
-        this.setState({timeLogs: timeLogs});
+        this.setState({ timeLogs });
     }
 
     canStart () : boolean {
-        const { timeLogs } = this.state;
+        const { timeLogs } = this.state,
+            last = timeLogs[timeLogs.length - 1];
 
-        const last = timeLogs[timeLogs.length-1];
-
-        return timeLogs.length === 0 || last.Stop !== undefined || last.Reason === "break";
+        return timeLogs.length === 0 || typeof last.Stop !== "undefined" || last.Reason === "break";
     }
 
-    handleStop ()  : void  {
+    handleStop () : void {
         const { timeLogs } = this.state;
 
         if (!this.canStop()) {
             return;
         }
 
-        timeLogs[timeLogs.length-1].Stop = new Date();
+        timeLogs[timeLogs.length - 1].Stop = new Date();
 
-        this.setState({timeLogs: timeLogs});
+        this.setState({ timeLogs });
     }
 
     canStop () : boolean {
         const { timeLogs } = this.state;
 
-        return timeLogs.length > 0 && timeLogs[timeLogs.length-1].Stop === undefined;
+        return timeLogs.length > 0 && typeof timeLogs[timeLogs.length - 1].Stop === "undefined";
     }
 
     render () : React.ReactNode {
@@ -112,35 +124,25 @@ class Player extends React.Component<unknown, IState> {
                     size="lg"
                     variant={buttonVariant(this.canStart())}
                 >
-                    Start
+                    {labelStart}
                 </Button>
                 <Button
                     onClick={this.handleBreak}
                     size="lg"
                     variant={buttonVariant(this.canBreak())}
                 >
-                    Break
+                    {labelBreak}
                 </Button>
                 <Button
                     onClick={this.handleStop}
                     size="lg"
                     variant={buttonVariant(this.canStop())}
                 >
-                    Stop
+                    {labelStop}
                 </Button>
             </div>
         );
     }
-}
-
-function buttonVariant (canCLick : boolean) : string {
-    let variant : string = "primary";
-
-    if (!canCLick) {
-        variant = "secondary";
-    }
-
-    return variant;
 }
 
 export default Player;

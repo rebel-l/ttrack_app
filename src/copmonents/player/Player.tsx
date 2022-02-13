@@ -1,11 +1,15 @@
-import { Button } from "react-bootstrap";
+import "./Player.scss";
 
+import { Break, Work } from "../../models/Reason";
+import { Button, Form } from "react-bootstrap";
+import { Locations } from "../../models/Location";
 import React from "react";
-
-import { TimeLogs } from "../../models/TimeLog";
+import { TimeLogs } from "../../models/TimeLogs";
 
 interface IState {
     timeLogs: TimeLogs
+    location: string
+    locationOptions: React.ReactNode[]
 }
 
 const buttonVariant = (canCLick : boolean) : string => {
@@ -25,7 +29,19 @@ class Player extends React.Component<unknown, IState> {
     constructor (props) {
         super(props);
 
-        this.state = { timeLogs: [] as TimeLogs };
+        const locationOptions : React.ReactNode[] = [];
+
+        Locations.forEach((value: string) => {
+            locationOptions.push(<option>{value}</option>); // eslint-disable-line react/jsx-one-expression-per-line
+        });
+
+        this.state = {
+            timeLogs: [] as TimeLogs,
+            location: Locations[0],
+            locationOptions,
+        };
+
+        this.handleLocation = this.handleLocation.bind(this);
 
         this.handleBreak = this.handleBreak.bind(this);
         this.handleStart = this.handleStart.bind(this);
@@ -37,13 +53,13 @@ class Player extends React.Component<unknown, IState> {
     }
 
     shouldComponentUpdate (nextProps: unknown, nextState: IState) : boolean {
-        console.log(this.state, nextState); // eslint-disable-line
+        console.log("RESULT", nextState);
 
         return true;
     }
 
     handleBreak () : void {
-        const { timeLogs } = this.state;
+        const { location, timeLogs } = this.state;
 
         if (!this.canBreak()) {
             return;
@@ -53,8 +69,8 @@ class Player extends React.Component<unknown, IState> {
 
         timeLogs.push({
             Start: new Date(),
-            Reason: "break",
-            Location: "home",
+            Reason: Break,
+            Location: location,
         });
 
         this.setState({ timeLogs });
@@ -68,7 +84,7 @@ class Player extends React.Component<unknown, IState> {
     }
 
     handleStart () : void {
-        const { timeLogs } = this.state;
+        const { location, timeLogs } = this.state;
 
         if (!this.canStart()) {
             return;
@@ -84,8 +100,8 @@ class Player extends React.Component<unknown, IState> {
 
         timeLogs.push({
             Start: new Date(),
-            Reason: "work",
-            Location: "home",
+            Reason: Work,
+            Location: location,
         });
 
         this.setState({ timeLogs });
@@ -116,9 +132,21 @@ class Player extends React.Component<unknown, IState> {
         return timeLogs.length > 0 && typeof timeLogs[timeLogs.length - 1].Stop === "undefined";
     }
 
+    handleLocation (elem) : void {
+        this.setState({ location: elem.target.value });
+    }
+
     render () : React.ReactNode {
+        const { locationOptions } = this.state;
+
         return (
             <div className="justify-content-center">
+                <Form.Select
+                    onChange={this.handleLocation}
+                    size="lg"
+                >
+                    {locationOptions}
+                </Form.Select>
                 <Button
                     onClick={this.handleStart}
                     size="lg"

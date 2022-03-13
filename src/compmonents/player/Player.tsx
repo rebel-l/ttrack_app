@@ -1,17 +1,12 @@
 import "./Player.scss";
+import { connect } from "react-redux";
 
 import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
-import { Locations } from "../../models/Location";
 import React from "react";
-import { save } from "../../service/timelogs";
+import { set } from "../../redux/timelog/timelogs";
+import { Locations } from "../../models/Location";
 import { TimeLogs } from "../../models/TimeLogs";
-
-interface IState {
-    timeLogs: TimeLogs
-    location: string
-    locationOptions: React.ReactNode[]
-}
 
 const buttonVariant = (canCLick : boolean) : string => {
         let variant = "primary";
@@ -22,10 +17,20 @@ const buttonVariant = (canCLick : boolean) : string => {
 
         return variant;
     },
+    // dispatch = useAppDispatch(),
     labelBreak = "Break",
     labelLocation = "Working from: ",
     labelStart = "Start",
-    labelStop = "Stop";
+    labelStop = "Stop",
+    mapDispatch = {set},
+    mapState = () => ({}),
+    connector = connect(mapState, mapDispatch);
+
+interface IState {
+    timeLogs: TimeLogs
+    location: string
+    locationOptions: React.ReactNode[]
+}
 
 class Player extends React.Component<unknown, IState> {
     constructor (props) {
@@ -55,7 +60,7 @@ class Player extends React.Component<unknown, IState> {
     }
 
     shouldComponentUpdate (nextProps: unknown, nextState: IState) : boolean {
-        console.log("RESULT", nextState);
+        // console.log("RESULT", nextState); // eslint-disable-line no-console
 
         return true;
     }
@@ -67,16 +72,18 @@ class Player extends React.Component<unknown, IState> {
             return;
         }
 
-        timeLogs[timeLogs.length - 1].Stop = new Date();
+        timeLogs[timeLogs.length - 1].Stop = new Date().toString();
 
         timeLogs.push({
-            Start: new Date(),
+            Start: new Date().toString(),
             Reason: Break,
             Location: location,
         });
 
-        save(timeLogs);
-        this.setState({timeLogs}); // TODO: use redux
+        this.props.set(timeLogs);
+
+        // eslint-disable-next-line
+        this.setState({ timeLogs }); // TODO: use redux
     }
 
     canBreak () : boolean {
@@ -97,18 +104,20 @@ class Player extends React.Component<unknown, IState> {
             const last = timeLogs[timeLogs.length - 1];
 
             if (typeof last.Stop === "undefined" && last.Reason === "break") {
-                last.Stop = new Date();
+                last.Stop = new Date().toString();
             }
         }
 
         timeLogs.push({
-            Start: new Date(),
+            Start: new Date().toString(),
             Reason: Work,
             Location: location,
         });
 
-        save(timeLogs);
-        this.setState({timeLogs}); // TODO: use redux
+        this.props.set(timeLogs);
+
+        // eslint-disable-next-line
+        this.setState({ timeLogs }); // TODO: use redux
     }
 
     canStart () : boolean {
@@ -125,10 +134,12 @@ class Player extends React.Component<unknown, IState> {
             return;
         }
 
-        timeLogs[timeLogs.length - 1].Stop = new Date();
+        timeLogs[timeLogs.length - 1].Stop = new Date().toString();
 
-        save(timeLogs);
-        this.setState({timeLogs}); // TODO: use redux
+        this.props.set(timeLogs);
+
+        // eslint-disable-next-line
+        this.setState({ timeLogs }); // TODO: use redux
     }
 
     canStop () : boolean {
@@ -145,6 +156,8 @@ class Player extends React.Component<unknown, IState> {
         const { locationOptions } = this.state;
 
         return (
+
+            // eslint-disable-next-line
             // TODO: use icons instead of button labels
             <div className="justify-content-center">
                 <div>
@@ -184,4 +197,4 @@ class Player extends React.Component<unknown, IState> {
     }
 }
 
-export default Player;
+export default connector(Player);

@@ -1,7 +1,7 @@
 export type TimeLog = {
     ID?: string;
-    Start: Date;
-    Stop?: Date;
+    Start: string;
+    Stop?: string;
     Reason: string;
     Location: string;
     CreatedAt?: Date;
@@ -13,7 +13,7 @@ export const timeLogIsEqual = (first: TimeLog, second: TimeLog) : boolean => {
         return false;
     }
 
-    if (first.Start.toTimeString() !== second.Start.toTimeString()) {
+    if (first.Start !== second.Start) {
         return false;
     }
 
@@ -21,6 +21,6 @@ export const timeLogIsEqual = (first: TimeLog, second: TimeLog) : boolean => {
     return !(typeof first.Stop === "undefined" && typeof first.Stop !== "undefined" ||
             typeof first.Stop !== "undefined" && typeof first.Stop === "undefined" ||
             typeof first.Stop !== "undefined" && typeof first.Stop !== "undefined" &&
-            first.Stop.toTimeString() !== second.Start.toTimeString());
+            first.Stop !== second.Start);
 };
 

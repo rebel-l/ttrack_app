@@ -1,4 +1,3 @@
-import Timelogs from "../redux/timelog/timelogs";
 import { TimeLog, timeLogIsEqual } from "./TimeLog";
 
 export type TimeLogs = TimeLog[];

@@ -5,11 +5,11 @@ import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
 import React from "react";
 import { RootState } from "../../redux/store";
-import { set, selectTimeLogs } from "../../redux/timelog/timelogs";
+import { selectTimeLogs } from "../../redux/timelog/timelogs";
 import { Locations } from "../../models/Location";
 import { TimeLog } from "../../models/TimeLog";
 import { clone, TimeLogs } from "../../models/TimeLogs";
-import { saveThunk } from "../../service/timelogs";
+import { save, SaveFunc } from "../../service/timelogs";
 
 const buttonVariant = (canCLick : boolean) : string => {
         let variant = "primary";
@@ -20,14 +20,12 @@ const buttonVariant = (canCLick : boolean) : string => {
 
         return variant;
     },
-    // dispatch = useAppDispatch(),
     labelBreak = "Break",
     labelLocation = "Working from: ",
     labelStart = "Start",
     labelStop = "Stop",
-    mapDispatch = {saveThunk, set},
+    mapDispatch = {save: save},
     mapState = (state: RootState) => {
-        console.log("mapState", state);
         return {
             timeLogs: selectTimeLogs(state)
         }
@@ -41,6 +39,7 @@ interface IState {
 
 interface IProps {
     timeLogs: TimeLogs
+    save: SaveFunc
 }
 
 class Player extends React.Component<IProps, IState> {
@@ -77,8 +76,6 @@ class Player extends React.Component<IProps, IState> {
         const { location } = this.state;
         let timeLogs: TimeLogs = clone(this.props.timeLogs);
 
-        console.log("break props", timeLogs);
-
         if (!this.canBreak()) {
             return;
         }
@@ -91,11 +88,7 @@ class Player extends React.Component<IProps, IState> {
             Location: location,
         });
 
-        // this.props.set(timeLogs);
         this.save(timeLogs);
-
-        // eslint-disable-next-line
-        // this.setState({ timeLogs }); // TODO: use redux
     }
 
     canBreak () : boolean {
@@ -128,12 +121,7 @@ class Player extends React.Component<IProps, IState> {
             Location: location,
         });
 
-        // this.props.set(timeLogs);
-
         this.save(timeLogs);
-
-        // eslint-disable-next-line
-        // this.setState({ timeLogs }); // TODO: use redux
     }
 
     canStart () : boolean {
@@ -153,12 +141,7 @@ class Player extends React.Component<IProps, IState> {
 
         timeLogs[timeLogs.length - 1].Stop = new Date().toISOString();
 
-        // this.props.set(timeLogs);
-
         this.save(timeLogs);
-
-        // eslint-disable-next-line
-        // this.setState({ timeLogs }); // TODO: use redux
     }
 
     canStop () : boolean {
@@ -173,7 +156,7 @@ class Player extends React.Component<IProps, IState> {
 
     save (values: TimeLogs) :void {
         values.forEach((value: TimeLog) => {
-            this.props.saveThunk(value);
+            this.props.save(value);
         });
     }
 

@@ -1,40 +1,39 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TimeLog } from "../../models/TimeLog";
 import type { RootState } from "../store";
+import { TimeLog } from "../../models/TimeLog";
 import { TimeLogs } from "../../models/TimeLogs";
 
 interface TimeLogsState {
     value: TimeLogs
 }
 
-const initialState: TimeLogsState = {
-    value: [] as TimeLogs
-};
+const initialState: TimeLogsState = { value: [] as TimeLogs };
 
 // eslint-disable-next-line one-var
-export const timelogsSlice = createSlice({
+export const
+    selectTimeLogs = (state: RootState) => state.timeLogs.value,
+    timeLogsSlice = createSlice({
         name: "timelogs",
         initialState,
         reducers: {
             saved: (state, action: PayloadAction<TimeLog>) => {
-                let found : boolean = false;
+                let found = false;
 
                 state.value.forEach((value: TimeLog, index: number) => {
-                    if(value.ID === action.payload.ID) {
+                    if (value.ID === action.payload.ID) {
                         state.value[index] = action.payload;
                         found = true;
                     }
-                })
+                });
 
-                if(!found) {
+                if (!found) {
                     state.value.push(action.payload);
                 }
 
-                return state
-            }
+                return state;
+            },
         },
     }),
-    { saved } = timelogsSlice.actions,
-    selectTimeLogs = (state: RootState) => state.timeLogs.value;
+    { saved } = timeLogsSlice.actions;
 
-export default timelogsSlice.reducer;
+export default timeLogsSlice.reducer;

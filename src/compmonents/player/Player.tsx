@@ -1,15 +1,16 @@
 import "./Player.scss";
-import { connect } from "react-redux";
 
 import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
-import React from "react";
-import { RootState } from "../../redux/store";
-import { selectTimeLogs } from "../../redux/timelog/timelogs";
-import { Locations } from "../../models/Location";
-import { TimeLog } from "../../models/TimeLog";
 import { clone, TimeLogs } from "../../models/TimeLogs";
 import { save, SaveFunc } from "../../service/timelogs";
+import { selectTimeLogs } from "../../redux/timelog/timelogs";
+
+import { Locations } from "../../models/Location";
+import React from "react";
+import { connect } from "react-redux";
+import { RootState } from "../../redux/store";
+import { TimeLog } from "../../models/TimeLog";
 
 const buttonVariant = (canCLick : boolean) : string => {
         let variant = "primary";
@@ -24,13 +25,9 @@ const buttonVariant = (canCLick : boolean) : string => {
     labelLocation = "Working from: ",
     labelStart = "Start",
     labelStop = "Stop",
-    mapDispatch = {save: save},
-    mapState = (state: RootState) => {
-        return {
-            timeLogs: selectTimeLogs(state)
-        }
-    },
-    connector = connect(mapState, mapDispatch);
+    mapDispatchToProps = { save },
+    mapStateToProps = (state: RootState) => ({ timeLogs: selectTimeLogs(state) }),
+    connector = connect(mapStateToProps, mapDispatchToProps);
 
 interface IState {
     location: string
@@ -68,13 +65,13 @@ class Player extends React.Component<IProps, IState> {
         this.canStop = this.canStop.bind(this);
     }
 
-    shouldComponentUpdate (nextProps: unknown, nextState: IState) : boolean {
+    shouldComponentUpdate () : boolean {
         return true;
     }
 
     handleBreak () : void {
-        const { location } = this.state;
-        let timeLogs: TimeLogs = clone(this.props.timeLogs);
+        const { location } = this.state,
+            timeLogs: TimeLogs = clone(this.props.timeLogs); // eslint-disable-line react/destructuring-assignment
 
         if (!this.canBreak()) {
             return;
@@ -93,15 +90,15 @@ class Player extends React.Component<IProps, IState> {
 
     canBreak () : boolean {
         const
-            timeLogs: TimeLogs = this.props.timeLogs,
+            { timeLogs } = this.props,
             last = timeLogs[timeLogs.length - 1];
 
         return timeLogs.length > 0 && typeof last.Stop === "undefined" && last.Reason !== "break";
     }
 
     handleStart () : void {
-        const { location } = this.state;
-        let timeLogs: TimeLogs = clone(this.props.timeLogs);
+        const { location } = this.state,
+            timeLogs: TimeLogs = clone(this.props.timeLogs); // eslint-disable-line react/destructuring-assignment
 
         if (!this.canStart()) {
             return;
@@ -126,14 +123,14 @@ class Player extends React.Component<IProps, IState> {
 
     canStart () : boolean {
         const
-            timeLogs: TimeLogs = this.props.timeLogs,
+            { timeLogs } = this.props,
             last = timeLogs[timeLogs.length - 1];
 
         return timeLogs.length === 0 || typeof last.Stop !== "undefined" || last.Reason === "break";
     }
 
     handleStop () : void {
-        let timeLogs: TimeLogs = clone(this.props.timeLogs);
+        const timeLogs: TimeLogs = clone(this.props.timeLogs); // eslint-disable-line react/destructuring-assignment
 
         if (!this.canStop()) {
             return;
@@ -145,7 +142,7 @@ class Player extends React.Component<IProps, IState> {
     }
 
     canStop () : boolean {
-        const timeLogs: TimeLogs = this.props.timeLogs;
+        const { timeLogs } = this.props;
 
         return timeLogs.length > 0 && typeof timeLogs[timeLogs.length - 1].Stop === "undefined";
     }
@@ -156,7 +153,7 @@ class Player extends React.Component<IProps, IState> {
 
     save (values: TimeLogs) :void {
         values.forEach((value: TimeLog) => {
-            this.props.save(value);
+            this.props.save(value); // eslint-disable-line react/destructuring-assignment
         });
     }
 

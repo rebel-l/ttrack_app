@@ -1,8 +1,19 @@
+import Timelogs from "../redux/timelog/timelogs";
 import { TimeLog, timeLogIsEqual } from "./TimeLog";
 
 export type TimeLogs = TimeLog[];
 
-export const timeLogsIsEqual = (first: TimeLogs, second: TimeLogs) : boolean => {
+export const
+    clone = (source: TimeLogs) : TimeLogs => {
+        let dest : TimeLogs = [];
+
+        source.forEach((value: TimeLog) => {
+            dest.push({ ...value });
+        });
+
+        return dest
+    },
+    timeLogsIsEqual = (first: TimeLogs, second: TimeLogs) : boolean => {
     if (first.length !== second.length) {
         return false;
     }

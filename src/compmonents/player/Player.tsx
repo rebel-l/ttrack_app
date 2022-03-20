@@ -4,9 +4,12 @@ import { connect } from "react-redux";
 import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
 import React from "react";
-import { set } from "../../redux/timelog/timelogs";
+import { RootState } from "../../redux/store";
+import { set, selectTimeLogs } from "../../redux/timelog/timelogs";
 import { Locations } from "../../models/Location";
-import { TimeLogs } from "../../models/TimeLogs";
+import { TimeLog } from "../../models/TimeLog";
+import { clone, TimeLogs } from "../../models/TimeLogs";
+import { saveThunk } from "../../service/timelogs";
 
 const buttonVariant = (canCLick : boolean) : string => {
         let variant = "primary";
@@ -22,18 +25,26 @@ const buttonVariant = (canCLick : boolean) : string => {
     labelLocation = "Working from: ",
     labelStart = "Start",
     labelStop = "Stop",
-    mapDispatch = {set},
-    mapState = () => ({}),
+    mapDispatch = {saveThunk, set},
+    mapState = (state: RootState) => {
+        console.log("mapState", state);
+        return {
+            timeLogs: selectTimeLogs(state)
+        }
+    },
     connector = connect(mapState, mapDispatch);
 
 interface IState {
-    timeLogs: TimeLogs
     location: string
     locationOptions: React.ReactNode[]
 }
 
-class Player extends React.Component<unknown, IState> {
-    constructor (props) {
+interface IProps {
+    timeLogs: TimeLogs
+}
+
+class Player extends React.Component<IProps, IState> {
+    constructor (props: IProps) {
         super(props);
 
         const locationOptions : React.ReactNode[] = [];
@@ -43,7 +54,6 @@ class Player extends React.Component<unknown, IState> {
         });
 
         this.state = {
-            timeLogs: [] as TimeLogs,
             location: Locations[0],
             locationOptions,
         };
@@ -60,41 +70,45 @@ class Player extends React.Component<unknown, IState> {
     }
 
     shouldComponentUpdate (nextProps: unknown, nextState: IState) : boolean {
-        // console.log("RESULT", nextState); // eslint-disable-line no-console
-
         return true;
     }
 
     handleBreak () : void {
-        const { location, timeLogs } = this.state;
+        const { location } = this.state;
+        let timeLogs: TimeLogs = clone(this.props.timeLogs);
+
+        console.log("break props", timeLogs);
 
         if (!this.canBreak()) {
             return;
         }
 
-        timeLogs[timeLogs.length - 1].Stop = new Date().toString();
+        timeLogs[timeLogs.length - 1].Stop = new Date().toISOString();
 
         timeLogs.push({
-            Start: new Date().toString(),
+            Start: new Date().toISOString(),
             Reason: Break,
             Location: location,
         });
 
-        this.props.set(timeLogs);
+        // this.props.set(timeLogs);
+        this.save(timeLogs);
 
         // eslint-disable-next-line
-        this.setState({ timeLogs }); // TODO: use redux
+        // this.setState({ timeLogs }); // TODO: use redux
     }
 
     canBreak () : boolean {
-        const { timeLogs } = this.state,
+        const
+            timeLogs: TimeLogs = this.props.timeLogs,
             last = timeLogs[timeLogs.length - 1];
 
         return timeLogs.length > 0 && typeof last.Stop === "undefined" && last.Reason !== "break";
     }
 
     handleStart () : void {
-        const { location, timeLogs } = this.state;
+        const { location } = this.state;
+        let timeLogs: TimeLogs = clone(this.props.timeLogs);
 
         if (!this.canStart()) {
             return;
@@ -104,52 +118,63 @@ class Player extends React.Component<unknown, IState> {
             const last = timeLogs[timeLogs.length - 1];
 
             if (typeof last.Stop === "undefined" && last.Reason === "break") {
-                last.Stop = new Date().toString();
+                last.Stop = new Date().toISOString();
             }
         }
 
         timeLogs.push({
-            Start: new Date().toString(),
+            Start: new Date().toISOString(),
             Reason: Work,
             Location: location,
         });
 
-        this.props.set(timeLogs);
+        // this.props.set(timeLogs);
+
+        this.save(timeLogs);
 
         // eslint-disable-next-line
-        this.setState({ timeLogs }); // TODO: use redux
+        // this.setState({ timeLogs }); // TODO: use redux
     }
 
     canStart () : boolean {
-        const { timeLogs } = this.state,
+        const
+            timeLogs: TimeLogs = this.props.timeLogs,
             last = timeLogs[timeLogs.length - 1];
 
         return timeLogs.length === 0 || typeof last.Stop !== "undefined" || last.Reason === "break";
     }
 
     handleStop () : void {
-        const { timeLogs } = this.state;
+        let timeLogs: TimeLogs = clone(this.props.timeLogs);
 
         if (!this.canStop()) {
             return;
         }
 
-        timeLogs[timeLogs.length - 1].Stop = new Date().toString();
+        timeLogs[timeLogs.length - 1].Stop = new Date().toISOString();
 
-        this.props.set(timeLogs);
+        // this.props.set(timeLogs);
+
+        this.save(timeLogs);
 
         // eslint-disable-next-line
-        this.setState({ timeLogs }); // TODO: use redux
+        // this.setState({ timeLogs }); // TODO: use redux
     }
 
     canStop () : boolean {
-        const { timeLogs } = this.state;
+        const timeLogs: TimeLogs = this.props.timeLogs;
 
         return timeLogs.length > 0 && typeof timeLogs[timeLogs.length - 1].Stop === "undefined";
     }
 
     handleLocation (elem) : void {
         this.setState({ location: elem.target.value });
+    }
+
+    save (values: TimeLogs) :void {
+        values.forEach((value: TimeLog) => {
+            this.props.saveThunk(value);
+        });
     }
 
     render () : React.ReactNode {

@@ -159,8 +159,8 @@ class Player extends React.Component<IProps, IState> {
     }
 
     render () : React.ReactNode {
-        const { locationOptions } = this.state;
-        const { timeLogs } = this.props;
+        const { locationOptions } = this.state,
+            { timeLogs } = this.props;
 
         return (
 

@@ -11,6 +11,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { RootState } from "../../redux/store";
 import { TimeLog } from "../../models/TimeLog";
+import List from "../list/List";
 
 const buttonVariant = (canCLick : boolean) : string => {
         let variant = "primary";
@@ -159,6 +160,7 @@ class Player extends React.Component<IProps, IState> {
 
     render () : React.ReactNode {
         const { locationOptions } = this.state;
+        const { timeLogs } = this.props;
 
         return (
 
@@ -197,6 +199,7 @@ class Player extends React.Component<IProps, IState> {
                 >
                     {labelStop}
                 </Button>
+                <List timeLogs={timeLogs} />
             </div>
         );
     }

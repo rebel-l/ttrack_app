@@ -1,8 +1,9 @@
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap"; /* stylelint-disable-line  import-notation */
 
 $btn-primary-color: #80A;
 $btn-primary-color-hover: #608;
 
+/* stylelint-disable selector-class-pattern */
 .btn-primary {
   background-color: $btn-primary-color;
   border-color: $btn-primary-color;
@@ -12,3 +13,4 @@ $btn-primary-color-hover: #608;
   background-color: $btn-primary-color-hover;
   border-color: $btn-primary-color-hover;
 }
+/* stylelint-enable selector-class-pattern */

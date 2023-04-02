@@ -16,6 +16,11 @@ export const
         name: "timelogs",
         initialState,
         reducers: {
+            loadedByDateRange: (state, action: PayloadAction<TimeLogs>) => {
+                state.value = action.payload;
+
+                return state;
+            },
             saved: (state, action: PayloadAction<TimeLog>) => {
                 let found = false;
 
@@ -34,6 +39,6 @@ export const
             },
         },
     }),
-    { saved } = timeLogsSlice.actions;
+    { loadedByDateRange, saved } = timeLogsSlice.actions;
 
 export default timeLogsSlice.reducer;

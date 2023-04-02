@@ -3,7 +3,7 @@ import "./Player.scss";
 import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
 import { clone, TimeLogs } from "../../models/TimeLogs";
-import { save, SaveFunc } from "../../service/timelogs";
+import { loadByDateRange, LoadByDateRangeFunc, save, SaveFunc } from "../../service/timelogs";
 import { selectTimeLogs } from "../../redux/timelog/timelogs";
 
 import { Locations } from "../../models/Location";
@@ -12,8 +12,9 @@ import { connect } from "react-redux";
 import { RootState } from "../../redux/store";
 import { TimeLog } from "../../models/TimeLog";
 import List from "../list/List";
+import { SQLDate } from "../../libs/DateTime";
 
-const buttonVariant = (canCLick : boolean) : string => {
+const buttonVariant = (canCLick: boolean): string => {
         let variant = "primary";
 
         if (!canCLick) {
@@ -26,28 +27,32 @@ const buttonVariant = (canCLick : boolean) : string => {
     labelLocation = "Working from: ",
     labelStart = "Start",
     labelStop = "Stop",
-    mapDispatchToProps = { save },
+    mapDispatchToProps = {
+        loadByDateRange,
+        save,
+    },
     mapStateToProps = (state: RootState) => ({ timeLogs: selectTimeLogs(state) }),
     connector = connect(mapStateToProps, mapDispatchToProps);
 
 interface IState {
-    location: string
-    locationOptions: React.ReactNode[]
+    location: string;
+    locationOptions: React.ReactNode[];
 }
 
 interface IProps {
-    timeLogs: TimeLogs
-    save: SaveFunc
+    loadByDateRange: LoadByDateRangeFunc;
+    save: SaveFunc;
+    timeLogs: TimeLogs;
 }
 
 class Player extends React.Component<IProps, IState> {
     constructor (props: IProps) {
         super(props);
 
-        const locationOptions : React.ReactNode[] = [];
+        const locationOptions: React.ReactNode[] = [];
 
         Locations.forEach((value: string) => {
-            locationOptions.push(<option>{value}</option>); // eslint-disable-line react/jsx-one-expression-per-line
+            locationOptions.push(<option key={value}>{value}</option>); // eslint-disable-line react/jsx-one-expression-per-line
         });
 
         this.state = {
@@ -66,11 +71,18 @@ class Player extends React.Component<IProps, IState> {
         this.canStop = this.canStop.bind(this);
     }
 
-    shouldComponentUpdate () : boolean {
+    shouldComponentUpdate (): boolean {
         return true;
     }
 
-    handleBreak () : void {
+    componentDidMount (): void {
+        const today = new Date();
+        const tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+
+        this.props.loadByDateRange(SQLDate(today), SQLDate(tomorrow));
+    }
+
+    handleBreak (): void {
         const { location } = this.state,
             timeLogs: TimeLogs = clone(this.props.timeLogs); // eslint-disable-line react/destructuring-assignment
 
@@ -89,7 +101,7 @@ class Player extends React.Component<IProps, IState> {
         this.save(timeLogs);
     }
 
-    canBreak () : boolean {
+    canBreak (): boolean {
         const
             { timeLogs } = this.props,
             last = timeLogs[timeLogs.length - 1];
@@ -97,7 +109,7 @@ class Player extends React.Component<IProps, IState> {
         return timeLogs.length > 0 && typeof last.Stop === "undefined" && last.Reason !== "break";
     }
 
-    handleStart () : void {
+    handleStart (): void {
         const { location } = this.state,
             timeLogs: TimeLogs = clone(this.props.timeLogs); // eslint-disable-line react/destructuring-assignment
 
@@ -122,7 +134,7 @@ class Player extends React.Component<IProps, IState> {
         this.save(timeLogs);
     }
 
-    canStart () : boolean {
+    canStart (): boolean {
         const
             { timeLogs } = this.props,
             last = timeLogs[timeLogs.length - 1];
@@ -130,7 +142,7 @@ class Player extends React.Component<IProps, IState> {
         return timeLogs.length === 0 || typeof last.Stop !== "undefined" || last.Reason === "break";
     }
 
-    handleStop () : void {
+    handleStop (): void {
         const timeLogs: TimeLogs = clone(this.props.timeLogs); // eslint-disable-line react/destructuring-assignment
 
         if (!this.canStop()) {
@@ -142,23 +154,23 @@ class Player extends React.Component<IProps, IState> {
         this.save(timeLogs);
     }
 
-    canStop () : boolean {
+    canStop (): boolean {
         const { timeLogs } = this.props;
 
         return timeLogs.length > 0 && typeof timeLogs[timeLogs.length - 1].Stop === "undefined";
     }
 
-    handleLocation (elem) : void {
+    handleLocation (elem): void {
         this.setState({ location: elem.target.value });
     }
 
-    save (values: TimeLogs) :void {
+    save (values: TimeLogs): void {
         values.forEach((value: TimeLog) => {
             this.props.save(value); // eslint-disable-line react/destructuring-assignment
         });
     }
 
-    render () : React.ReactNode {
+    render (): React.ReactNode {
         const { locationOptions } = this.state,
             { timeLogs } = this.props;
 
@@ -199,7 +211,7 @@ class Player extends React.Component<IProps, IState> {
                 >
                     {labelStop}
                 </Button>
-                <List timeLogs={timeLogs} />
+                <List timeLogs={timeLogs}/>
             </div>
         );
     }

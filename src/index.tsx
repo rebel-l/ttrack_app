@@ -7,10 +7,18 @@ import { store } from "./redux/store";
 
 const container = document.getElementById("root");
 const root = ReactDOMClient.createRoot(container);
+
+// NOTE: use React.StrictMode only for development as it forces React alsways to render twice
+// root.render(
+//     <React.StrictMode>
+//         <Provider store={store}>
+//             <App/>
+//         </Provider>
+//     </React.StrictMode>,
+// );
+
 root.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <App/>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <App/>
+    </Provider>,
 );

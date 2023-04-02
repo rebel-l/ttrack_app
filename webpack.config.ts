@@ -43,11 +43,7 @@ const webpackConfig = (): Configuration => ({
             minify: true,
             hash: true,
         }),
-        new ForkTsCheckerWebpackPlugin({
-            eslint: {
-                files: "./src/**/*.{ts,tsx,js,jsx}",
-            },
-        }),
+        new ForkTsCheckerWebpackPlugin({}),
     ],
 });
 

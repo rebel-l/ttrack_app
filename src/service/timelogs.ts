@@ -13,8 +13,8 @@ export interface LoadByDateRangeFunc {
 
 // TODO: create base url dynamic
 const client = axios.create({
-    baseURL: "http://localhost:3000", // development
-    // baseURL: "/api" // production
+    // baseURL: "http://localhost:3000", // development
+    baseURL: "/api" // production
 });
 
 // eslint-disable-next-line one-var

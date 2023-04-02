@@ -6,10 +6,10 @@ import { Container } from "react-bootstrap";
 import Player from "./player/Player";
 
 
-const App: React.FC = () => {
-    return <Container fluid={true}>
-        <Player/>
-    </Container>;
-};
+const App: React.FC = () => (
+    <Container fluid={true}>
+        <Player />
+    </Container>
+);
 
 export default App;

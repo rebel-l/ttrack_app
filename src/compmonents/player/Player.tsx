@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { RootState } from "../../redux/store";
 import { TimeLog } from "../../models/TimeLog";
 import List from "../list/List";
-import { SQLDate } from "../../libs/DateTime";
+import { Day, sqlDate } from "../../libs/DateTime";
 
 const buttonVariant = (canCLick: boolean): string => {
         let variant = "primary";
@@ -52,7 +52,13 @@ class Player extends React.Component<IProps, IState> {
         const locationOptions: React.ReactNode[] = [];
 
         Locations.forEach((value: string) => {
-            locationOptions.push(<option key={value}>{value}</option>); // eslint-disable-line react/jsx-one-expression-per-line
+            const item = (
+                <option key={value}>
+                    {value}
+                </option>
+            );
+
+            locationOptions.push(item);
         });
 
         this.state = {
@@ -76,10 +82,11 @@ class Player extends React.Component<IProps, IState> {
     }
 
     componentDidMount (): void {
-        const today = new Date();
-        const tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+        const
+            today = new Date(),
+            tomorrow = new Date(today.getTime() + Day);
 
-        this.props.loadByDateRange(SQLDate(today), SQLDate(tomorrow));
+        this.props.loadByDateRange(sqlDate(today), sqlDate(tomorrow));
     }
 
     handleBreak (): void {
@@ -211,7 +218,7 @@ class Player extends React.Component<IProps, IState> {
                 >
                     {labelStop}
                 </Button>
-                <List timeLogs={timeLogs}/>
+                <List timeLogs={timeLogs} />
             </div>
         );
     }

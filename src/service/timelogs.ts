@@ -26,6 +26,7 @@ export const
             const response = await client.put(`/timgelogs`, payload);
 
             dispatch(saved(response.data));
+            dispatch(error(""));
         } catch (e) {
             dispatch(error(e.message));
         }

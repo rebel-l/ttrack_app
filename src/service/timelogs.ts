@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { loadedByDateRange, saved } from "../redux/timelog/timelogs";
+import { error } from "../redux/error";
 import { TimeLog } from "../models/TimeLog";
 
 export interface SaveFunc {
@@ -21,9 +22,13 @@ const client = axios.create({
 export const
     save: SaveFunc = (payload: TimeLog) => async (dispatch) => {
         // eslint-disable-next-line
-        const response = await client.put(`/timgelogs`, payload);
+        try {
+            const response = await client.put(`/timgelogs`, payload);
 
-        dispatch(saved(response.data));
+            dispatch(saved(response.data));
+        } catch (e) {
+            dispatch(error(e.message));
+        }
     },
 
     loadByDateRange: LoadByDateRangeFunc = (start: string, stop: string) => async (dispatch) => {

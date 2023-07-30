@@ -1,10 +1,10 @@
 import React from "react";
+import { selectError } from "../redux/error";
 import { RootState } from "../redux/store";
-import { ErrorState, selectError } from "../redux/error";
 import { connect } from "react-redux";
 
 interface IProps {
-    error: ErrorState
+    error: string
 }
 const
     mapStateToProps = (state: RootState) => ({ error: selectError(state) }),
@@ -18,15 +18,15 @@ class Error extends React.Component<IProps> {
     render () {
         const { error } = this.props;
 
-        console.log(error.message); // FIXME: must be a slice in store
+        console.log("WE ARE HERE", error)
 
-        if (error.message !== "") {
+        if (error === "") {
             return;
         }
 
         return (
             <h1>
-                {error.message}
+                {error}
             </h1>
         );
     }

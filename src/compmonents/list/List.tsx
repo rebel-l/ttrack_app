@@ -19,7 +19,7 @@ const numDigits = 2,
         return val;
     };
 
-class Player extends React.Component<IProps> {
+class List extends React.Component<IProps> {
     shouldComponentUpdate () : boolean {
         return true;
     }
@@ -96,4 +96,4 @@ class Player extends React.Component<IProps> {
     }
 }
 
-export default Player;
+export default List;

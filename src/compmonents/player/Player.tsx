@@ -53,7 +53,7 @@ class Player extends React.Component<IProps, IState> {
 
         Locations.forEach((value: string) => {
             const item = (
-                <option key={value} selected={value === Home}>
+                <option key={value}>
                     {value}
                 </option>
             );
@@ -195,6 +195,7 @@ class Player extends React.Component<IProps, IState> {
                     <Form.Select
                         onChange={this.handleLocation}
                         size="sm"
+                        defaultValue={this.state.location}
                     >
                         {locationOptions}
                     </Form.Select>

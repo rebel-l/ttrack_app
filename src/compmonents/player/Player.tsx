@@ -6,7 +6,7 @@ import { clone, TimeLogs } from "../../models/TimeLogs";
 import { loadByDateRange, LoadByDateRangeFunc, save, SaveFunc } from "../../service/timelogs";
 import { selectTimeLogs } from "../../redux/timelog/timelogs";
 
-import { Locations } from "../../models/Location";
+import { Home, Locations } from "../../models/Location";
 import React from "react";
 import { connect } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -53,7 +53,7 @@ class Player extends React.Component<IProps, IState> {
 
         Locations.forEach((value: string) => {
             const item = (
-                <option key={value}>
+                <option key={value} selected={value === Home}>
                     {value}
                 </option>
             );
@@ -61,11 +61,13 @@ class Player extends React.Component<IProps, IState> {
             locationOptions.push(item);
         });
 
+        // Initial state
         this.state = {
-            location: Locations[0],
+            location: Home,
             locationOptions,
         };
 
+        // Bindings
         this.handleLocation = this.handleLocation.bind(this);
 
         this.handleBreak = this.handleBreak.bind(this);
@@ -167,8 +169,8 @@ class Player extends React.Component<IProps, IState> {
         return timeLogs.length > 0 && typeof timeLogs[timeLogs.length - 1].Stop === "undefined";
     }
 
-    handleLocation (elem): void {
-        this.setState({ location: elem.target.value });
+    handleLocation (elem: React.FormEvent<HTMLSelectElement>): void {
+        this.setState({ location: elem.currentTarget.value });
     }
 
     save (values: TimeLogs): void {

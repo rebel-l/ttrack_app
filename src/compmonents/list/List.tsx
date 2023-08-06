@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import { TimeLogs } from "../../models/TimeLogs";
 
 interface IProps {
-    timeLogs: TimeLogs
+    readonly timeLogs: TimeLogs
 }
 
 // eslint-disable-next-line no-warning-comments

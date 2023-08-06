@@ -11,15 +11,16 @@ import Error from "./Error";
 const App: React.FC = () => {
     const [key, setKey] = useState("#player");
 
-    const handleSelect = (eventKey) => setKey(eventKey)
+    const handleSelect = (eventKey: string) => setKey(eventKey)
 
-    let body : React.JSX.Element
+    let body : React.JSX.Element;
+
     switch (key) {
     case "#player":
         body = <Player />;
         break;
     case "#absence":
-        body = <Abesence />
+        body = <Abesence />;
         break;
     }
 
@@ -37,7 +38,7 @@ const App: React.FC = () => {
             {body}
         </Container>
     );
-}
+};
 
 
 export default App;

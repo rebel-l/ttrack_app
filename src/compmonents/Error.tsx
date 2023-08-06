@@ -2,10 +2,10 @@ import React from "react";
 import { selectError } from "../redux/error";
 import { RootState } from "../redux/store";
 import { connect } from "react-redux";
-import Badge from 'react-bootstrap/Badge';
+import Badge from "react-bootstrap/Badge";
 
 interface IProps {
-    error: string
+    readonly error: string
 }
 const
     mapStateToProps = (state: RootState) => ({ error: selectError(state) }),

@@ -1,7 +1,7 @@
 import React from "react";
-import DateRangePicker from '@wojtekmaj/react-daterange-picker';
-import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
-import 'react-calendar/dist/Calendar.css';
+import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
+import "react-calendar/dist/Calendar.css";
 import { Button, Form } from "react-bootstrap";
 import { Reasons, Vacation } from "../../models/Absence";
 
@@ -17,6 +17,7 @@ interface IState {
 const
     labelReason = "Reason",
     labelAdd = "Add";
+
 class Abesence extends React.Component<any, IState> {
     constructor (props: any) {
         super(props);
@@ -37,7 +38,7 @@ class Abesence extends React.Component<any, IState> {
         this.state = {
             range: [new Date(), new Date()] as Value,
             reason: Vacation,
-            reasonOptions
+            reasonOptions,
         };
 
         // Bindings
@@ -46,7 +47,11 @@ class Abesence extends React.Component<any, IState> {
         this.onChange = this.onChange.bind(this);
     }
 
-    handleAdd(){
+    shouldComponentUpdate (): boolean {
+        return true;
+    }
+
+    handleAdd () {
         // TODO: create working days for range and send to backend
         console.log(this.state);
         console.log("ADD");
@@ -56,11 +61,11 @@ class Abesence extends React.Component<any, IState> {
         this.setState({ reason: elem.currentTarget.value });
     }
 
-    onChange(data: Value){
-        this.setState({ range: data });
+    onChange (value: Value)  {
+        this.setState({ range: value });
     }
     render () {
-        const { reasonOptions } = this.state
+        const { reasonOptions } = this.state;
 
         return (
             <div className="justify-content-center">

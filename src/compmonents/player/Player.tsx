@@ -40,9 +40,9 @@ interface IState {
 }
 
 interface IProps {
-    loadByDateRange: LoadByDateRangeFunc;
-    save: SaveFunc;
-    timeLogs: TimeLogs;
+    readonly loadByDateRange: LoadByDateRangeFunc;
+    readonly save: SaveFunc;
+    readonly timeLogs: TimeLogs;
 }
 
 class Player extends React.Component<IProps, IState> {

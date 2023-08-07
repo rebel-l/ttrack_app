@@ -3,13 +3,12 @@ import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { Button, Form } from "react-bootstrap";
-import { Reasons, Vacation } from "../../models/Absence";
+import { Reasons, Vacation, convertAbsenceToTimeLogs, Absence } from "../../models/Absence";
+import { TimeLogs } from "../../models/TimeLogs";
 
-type ValuePiece = Date | null;
 
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 interface IState {
-    range: Value;
+    range: Absence;
     reason: string;
     reasonOptions: React.ReactNode[];
 }
@@ -36,7 +35,7 @@ class Abesence extends React.Component<any, IState> {
 
         // Initial state
         this.state = {
-            range: [new Date(), new Date()] as Value,
+            range: [new Date(), new Date()] as Absence,
             reason: Vacation,
             reasonOptions,
         };
@@ -52,8 +51,12 @@ class Abesence extends React.Component<any, IState> {
     }
 
     handleAdd () {
-        // TODO: create working days for range and send to backend
-        console.log(this.state);
+        const timeLogs : TimeLogs = convertAbsenceToTimeLogs(this.state.reason, this.state.range);
+
+        console.log(timeLogs);
+
+        // TODO: save timelogs
+
         console.log("ADD");
     }
 
@@ -61,9 +64,10 @@ class Abesence extends React.Component<any, IState> {
         this.setState({ reason: elem.currentTarget.value });
     }
 
-    onChange (value: Value)  {
+    onChange (value: Absence)  {
         this.setState({ range: value });
     }
+
     render () {
         const { reasonOptions } = this.state;
 

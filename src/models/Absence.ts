@@ -11,6 +11,7 @@ export type AbsencePiece = Date | null;
 export type Absence = AbsencePiece | [AbsencePiece, AbsencePiece];
 
 export const
+    Location: string = "absence",
     SickLeave: string = "sick leave",
     Vacation: string = "vacation",
     Reasons : readonly string[] = [
@@ -38,7 +39,8 @@ export const
         return {
             Start: start.toISOString(),
             Stop: end.toISOString(),
-            Reason: reason
+            Reason: reason,
+            Location: Location,
         } as TimeLog
     },
     convertAbsenceToTimeLogs = (reason: string, range: Absence) : TimeLogs => {

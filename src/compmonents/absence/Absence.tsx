@@ -3,8 +3,11 @@ import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { Button, Form } from "react-bootstrap";
+import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import { Reasons, Vacation, convertAbsenceToTimeLogs, Absence } from "../../models/Absence";
+import { TimeLog } from "../../models/TimeLog";
 import { TimeLogs } from "../../models/TimeLogs";
+import { save } from "../../service/timelogs";
 
 
 interface IState {
@@ -15,7 +18,11 @@ interface IState {
 
 const
     labelReason = "Reason",
-    labelAdd = "Add";
+    labelAdd = "Add",
+    mapDispatchToProps = {
+        save,
+    },
+    connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);
 
 class Abesence extends React.Component<any, IState> {
     constructor (props: any) {
@@ -55,7 +62,10 @@ class Abesence extends React.Component<any, IState> {
 
         console.log(timeLogs);
 
-        // TODO: save timelogs
+        // TODO: save timelogs with success mesage
+        timeLogs.forEach((value: TimeLog) => {
+            this.props.save(value); // eslint-disable-line react/destructuring-assignment
+        });
 
         console.log("ADD");
     }
@@ -102,4 +112,4 @@ class Abesence extends React.Component<any, IState> {
     }
 }
 
-export default Abesence;
+export default connector(Abesence);

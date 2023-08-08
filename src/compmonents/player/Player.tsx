@@ -8,14 +8,14 @@ import { selectTimeLogs } from "../../redux/timelog/timelogs";
 
 import { Home, Locations } from "../../models/Location";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import { RootState } from "../../redux/store";
 import { TimeLog } from "../../models/TimeLog";
 import List from "../list/List";
 import { Day, sqlDate } from "../../libs/DateTime";
 
 const buttonVariant = (canCLick: boolean): string => {
-        let variant = "primary";
+        let variant : string = "primary";
 
         if (!canCLick) {
             variant = "secondary";
@@ -23,16 +23,16 @@ const buttonVariant = (canCLick: boolean): string => {
 
         return variant;
     },
-    labelBreak = "Break",
-    labelLocation = "Working from: ",
-    labelStart = "Start",
-    labelStop = "Stop",
+    labelBreak : string = "Break",
+    labelLocation : string = "Working from: ",
+    labelStart : string = "Start",
+    labelStop : string = "Stop",
     mapDispatchToProps = {
         loadByDateRange,
         save,
     },
     mapStateToProps = (state: RootState) => ({ timeLogs: selectTimeLogs(state) }),
-    connector = connect(mapStateToProps, mapDispatchToProps);
+    connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 interface IState {
     location: string;

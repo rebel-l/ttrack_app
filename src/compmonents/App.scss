@@ -14,3 +14,8 @@ $btn-primary-color-hover: #608;
   border-color: $btn-primary-color-hover;
 }
 /* stylelint-enable selector-class-pattern */
+
+.nav-pills .nav-link.active {
+  background-color: $btn-primary-color;
+  border-color: $btn-primary-color;
+}

@@ -1,32 +1,56 @@
+import "./Errors.scss";
+
 import React from "react";
-import { selectError } from "../redux/error";
+import { Button } from "react-bootstrap";
+import { selectErrors } from "../redux/error";
 import { RootState } from "../redux/store";
 import { connect } from "react-redux";
 import Badge from "react-bootstrap/Badge";
 
 interface IProps {
-    readonly error: string
+    readonly errors: string[]
 }
 const
-    mapStateToProps = (state: RootState) => ({ error: selectError(state) }),
+    mapStateToProps = (state: RootState): IProps => ({ errors: selectErrors(state) }),
     connector = connect(mapStateToProps);
 
 class Error extends React.Component<IProps> {
+    constructor (props: IProps) {
+        super(props);
+
+        this.handleClose = this.handleClose.bind(this);
+    }
     shouldComponentUpdate () : boolean {
         return true;
     }
 
-    render () {
-        const { error } = this.props;
+    handleClose() {
+        console.log("HERE"); // TODO
+    }
 
-        if (error === "") {
+    render () {
+        const { errors } = this.props;
+
+        if (errors.length === 0) {
             return;
         }
 
+        let badges = [];
+        errors.forEach((error: string, index: number) => {
+            badges.push((
+                <div>
+                    <Badge bg="danger" key={index}>
+                        {error}
+                    </Badge>
+                </div>
+            ));
+        });
+
         return (
-            <Badge bg="danger">
-                {error}
-            </Badge>
+            <div className={"errors"}>
+                <Button variant={"link"} onClick={this.handleClose}>Close All</Button>
+                {badges}
+            </div>
         );
     }
 }

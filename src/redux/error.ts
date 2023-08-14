@@ -2,21 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 export interface ErrorState {
-    message: string[]
+    lastRead: number
+    messages: string[]
 }
 
-const initialState: ErrorState = { message: [] };
+const initialState: ErrorState = {
+    lastRead: 0,
+    messages: []
+};
 
 // eslint-disable-next-line one-var
 export const
-    selectError = (state: RootState) => state.error.message.at(-1),
+    selectErrors = (state: RootState) => state.error.messages.slice(state.error.lastRead),
     errorSlice = createSlice({
         name: "error",
         initialState,
         reducers: {
             error: (state, action : PayloadAction<string>) => {
-                state.message.push(action.payload);
-
+                state.messages.push(action.payload);
                 return state;
             },
         },

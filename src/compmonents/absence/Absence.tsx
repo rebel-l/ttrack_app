@@ -60,14 +60,10 @@ class Abesence extends React.Component<any, IState> {
     handleAdd () {
         const timeLogs : TimeLogs = convertAbsenceToTimeLogs(this.state.reason, this.state.range);
 
-        console.log(timeLogs);
-
         // TODO: save timelogs with success mesage
         timeLogs.forEach((value: TimeLog) => {
             this.props.save(value); // eslint-disable-line react/destructuring-assignment
         });
-
-        console.log("ADD");
     }
 
     handleReason (elem: React.FormEvent<HTMLSelectElement>): void {

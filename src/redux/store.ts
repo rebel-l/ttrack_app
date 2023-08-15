@@ -4,7 +4,7 @@ import ErrorState from "./error";
 
 export const store = configureStore({
     reducer: {
-        error: ErrorState,
+        notifications: ErrorState,
         timeLogs: timelogs,
     },
 });

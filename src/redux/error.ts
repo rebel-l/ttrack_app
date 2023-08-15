@@ -11,7 +11,7 @@ const initialState: ErrorState = {
 
 // eslint-disable-next-line one-var
 export const
-    selectErrors = (state: RootState) => state.error.messages,
+    selectErrors = (state: RootState) => state.notifications.messages,
     errorSlice = createSlice({
         name: "error",
         initialState,

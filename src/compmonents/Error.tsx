@@ -2,7 +2,7 @@ import "./Errors.scss";
 
 import React from "react";
 import { Button } from "react-bootstrap";
-import { reset, selectErrors } from "../redux/error";
+import { resetAction, selectErrors } from "../redux/error";
 import { RootState } from "../redux/store";
 import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import Badge from "react-bootstrap/Badge";
@@ -18,7 +18,7 @@ interface IProps {
 
 const
     doReset: ResetFunc = () => async (dispatch) => {
-        dispatch(reset())
+        dispatch(resetAction())
     },
     mapStateToProps = (state: RootState) => ({ errors: selectErrors(state)}),
     mapDispatchToProps = {

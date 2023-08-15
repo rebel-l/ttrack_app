@@ -16,16 +16,16 @@ export const
         name: "error",
         initialState,
         reducers: {
-            error: (state, action : PayloadAction<string>) => {
+            errorAction: (state, action : PayloadAction<string>) => {
                 state.messages.push(action.payload);
                 return state;
             },
-            reset: (state) => {
+            resetAction: (state) => {
                 state.messages = initialState.messages;
                 return state;
             }
         },
     }),
-    { error, reset } = errorSlice.actions;
+    { errorAction, resetAction } = errorSlice.actions;
 
 export default errorSlice.reducer;

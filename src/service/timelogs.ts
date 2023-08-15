@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { loadedByDateRange, saved } from "../redux/timelog/timelogs";
-import { error } from "../redux/error";
+import { errorAction } from "../redux/error";
 import { TimeLog } from "../models/TimeLog";
 
 export interface SaveFunc {
@@ -27,7 +27,7 @@ export const
 
             dispatch(saved(response.data));
         } catch (e) {
-            dispatch(error(e.message));
+            dispatch(errorAction(e.message));
         }
     },
 

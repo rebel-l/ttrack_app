@@ -22,8 +22,12 @@ export const
                 state.messages.push(action.payload);
                 return state;
             },
+            reset: (state) => {
+                state.messages = initialState.messages;
+                return state;
+            }
         },
     }),
-    { error } = errorSlice.actions;
+    { error, reset } = errorSlice.actions;
 
 export default errorSlice.reducer;

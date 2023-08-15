@@ -2,17 +2,29 @@ import "./Errors.scss";
 
 import React from "react";
 import { Button } from "react-bootstrap";
-import { selectErrors } from "../redux/error";
+import { reset, selectErrors } from "../redux/error";
 import { RootState } from "../redux/store";
-import { connect } from "react-redux";
+import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import Badge from "react-bootstrap/Badge";
+
+interface ResetFunc {
+    (): void;
+}
 
 interface IProps {
     readonly errors: string[]
+    readonly doReset: ResetFunc
 }
+
 const
-    mapStateToProps = (state: RootState): IProps => ({ errors: selectErrors(state) }),
-    connector = connect(mapStateToProps);
+    doReset: ResetFunc = () => async (dispatch) => {
+        dispatch(reset())
+    },
+    mapStateToProps = (state: RootState) => ({ errors: selectErrors(state)}),
+    mapDispatchToProps = {
+        doReset
+    },
+    connector: InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 class Error extends React.Component<IProps> {
     constructor (props: IProps) {
@@ -25,7 +37,7 @@ class Error extends React.Component<IProps> {
     }
 
     handleClose() {
-        console.log("HERE"); // TODO
+        this.props.doReset();
     }
 
     render () {

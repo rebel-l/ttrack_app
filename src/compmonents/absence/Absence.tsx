@@ -24,7 +24,7 @@ const
     },
     connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);
 
-class Abesence extends React.Component<any, IState> {
+class AbsenceComp extends React.Component<any, IState> {
     constructor (props: any) {
         super(props);
 
@@ -108,4 +108,4 @@ class Abesence extends React.Component<any, IState> {
     }
 }
 
-export default connector(Abesence);
+export default connector(AbsenceComp);

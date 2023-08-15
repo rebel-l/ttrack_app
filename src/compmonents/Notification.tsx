@@ -2,7 +2,7 @@ import "./Errors.scss";
 
 import React from "react";
 import { Button } from "react-bootstrap";
-import { resetAction, selectErrors } from "../redux/error";
+import { resetAction, selectNotifications } from "../redux/notifcations";
 import { RootState } from "../redux/store";
 import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import Badge from "react-bootstrap/Badge";
@@ -20,13 +20,13 @@ const
     doReset: ResetFunc = () => async (dispatch) => {
         dispatch(resetAction())
     },
-    mapStateToProps = (state: RootState) => ({ errors: selectErrors(state)}),
+    mapStateToProps = (state: RootState) => ({ errors: selectNotifications(state)}),
     mapDispatchToProps = {
         doReset
     },
     connector: InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
-class Error extends React.Component<IProps> {
+class Notification extends React.Component<IProps> {
     constructor (props: IProps) {
         super(props);
 
@@ -67,4 +67,4 @@ class Error extends React.Component<IProps> {
     }
 }
 
-export default connector(Error);
+export default connector(Notification);

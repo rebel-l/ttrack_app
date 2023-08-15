@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { loadedByDateRange, saved } from "../redux/timelog/timelogs";
-import { errorAction } from "../redux/error";
+import { errorAction } from "../redux/notifcations";
 import { TimeLog } from "../models/TimeLog";
 
 export interface SaveFunc {

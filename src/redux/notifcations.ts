@@ -11,9 +11,9 @@ const initialState: ErrorState = {
 
 // eslint-disable-next-line one-var
 export const
-    selectErrors = (state: RootState) => state.notifications.messages,
-    errorSlice = createSlice({
-        name: "error",
+    selectNotifications = (state: RootState) => state.notifications.messages,
+    notifications = createSlice({
+        name: "notifications",
         initialState,
         reducers: {
             errorAction: (state, action : PayloadAction<string>) => {
@@ -23,9 +23,13 @@ export const
             resetAction: (state) => {
                 state.messages = initialState.messages;
                 return state;
-            }
+            },
+            successAction: (state, action : PayloadAction<string>) => {
+                state.messages.push(action.payload);
+                return state;
+            },
         },
     }),
-    { errorAction, resetAction } = errorSlice.actions;
+    { errorAction, resetAction, successAction } = notifications.actions;
 
-export default errorSlice.reducer;
+export default notifications.reducer;

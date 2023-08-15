@@ -5,7 +5,7 @@ import { Container, Nav } from "react-bootstrap";
 import { useState } from "react";
 import Abesence from "./absence/Absence";
 import Player from "./player/Player";
-import Error from "./Error";
+import Notification from "./Notification";
 
 
 const App: React.FC = () => {
@@ -34,7 +34,7 @@ const App: React.FC = () => {
                     <Nav.Link eventKey="#absence">Absence</Nav.Link>
                 </Nav.Item>
             </Nav>
-            <Error />
+            <Notification />
             {body}
         </Container>
     );

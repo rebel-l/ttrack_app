@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { Container, Nav } from "react-bootstrap";
 import { useState } from "react";
-import Abesence from "./absence/Absence";
+import Absence from "./absence/Absence";
 import Player from "./player/Player";
 import Notification from "./Notification";
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
         body = <Player />;
         break;
     case "#absence":
-        body = <Abesence />;
+        body = <Absence />;
         break;
     }
 

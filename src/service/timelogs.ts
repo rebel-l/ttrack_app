@@ -5,7 +5,7 @@ import { errorAction, successAction } from "../redux/notifcations";
 import { TimeLog } from "../models/TimeLog";
 
 export interface SaveFunc {
-    (payload: TimeLog): void;
+    (payload: TimeLog, showSuccess?: boolean): void;
 }
 
 export interface LoadByDateRangeFunc {
@@ -20,13 +20,15 @@ const client = axios.create({
 
 // eslint-disable-next-line one-var
 export const
-    save: SaveFunc = (payload: TimeLog) => async (dispatch) => {
+    save: SaveFunc = (payload: TimeLog, showSuccess: boolean) => async (dispatch) => {
         // eslint-disable-next-line
         try {
             const response = await client.put(`/timgelogs`, payload);
 
             dispatch(saved(response.data));
-            dispatch(successAction(response.data.ID));
+            if (showSuccess) {
+                dispatch(successAction(response.data.ID));
+            }
         } catch (e) {
             dispatch(errorAction(e.message));
         }

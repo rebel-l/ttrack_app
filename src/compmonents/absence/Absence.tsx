@@ -60,9 +60,8 @@ class AbsenceComp extends React.Component<any, IState> {
     handleAdd () {
         const timeLogs : TimeLogs = convertAbsenceToTimeLogs(this.state.reason, this.state.range);
 
-        // TODO: save timelogs with success mesage
         timeLogs.forEach((value: TimeLog) => {
-            this.props.save(value); // eslint-disable-line react/destructuring-assignment
+            this.props.save(value, true); // eslint-disable-line react/destructuring-assignment
         });
     }
 

@@ -1,4 +1,4 @@
-import "./Errors.scss";
+import "./Notification.scss";
 
 import React from "react";
 import { Button } from "react-bootstrap";

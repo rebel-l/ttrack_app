@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { loadedByDateRange, saved } from "../redux/timelog/timelogs";
-import { errorAction } from "../redux/notifcations";
+import { errorAction, successAction } from "../redux/notifcations";
 import { TimeLog } from "../models/TimeLog";
 
 export interface SaveFunc {
@@ -26,6 +26,7 @@ export const
             const response = await client.put(`/timgelogs`, payload);
 
             dispatch(saved(response.data));
+            dispatch(successAction(response.data.ID));
         } catch (e) {
             dispatch(errorAction(e.message));
         }

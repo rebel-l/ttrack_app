@@ -1,31 +1,39 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
-export interface ErrorState {
-    messages: string[]
+const error: string = "danger",
+    success: string = "success";
+
+export interface Notification {
+    message: string
+    type: string
 }
 
-const initialState: ErrorState = {
-    messages: []
-};
+const initialState: Notification[] = [];
 
 // eslint-disable-next-line one-var
 export const
-    selectNotifications = (state: RootState) => state.notifications.messages,
+    selectNotifications = (state: RootState) => state.notifications,
     notifications = createSlice({
         name: "notifications",
         initialState,
         reducers: {
             errorAction: (state, action : PayloadAction<string>) => {
-                state.messages.push(action.payload);
+                state.push({
+                    message: action.payload,
+                    type: error
+                });
                 return state;
             },
             resetAction: (state) => {
-                state.messages = initialState.messages;
+                state = initialState;
                 return state;
             },
             successAction: (state, action : PayloadAction<string>) => {
-                state.messages.push(action.payload);
+                state.push({
+                    message: action.payload,
+                    type: success
+                });
                 return state;
             },
         },

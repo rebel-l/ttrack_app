@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import timelogs from "./timelog/timelogs";
-import ErrorState from "./notifcations";
+import timeLogsReducer from "./timelog/timelogs";
+import notificationReducer from "./notifcations";
+
+
 
 export const store = configureStore({
     reducer: {
-        notifications: ErrorState,
-        timeLogs: timelogs,
+        notifications: notificationReducer,
+        timeLogs: timeLogsReducer,
     },
 });
 

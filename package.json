@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Web application for time tracking.",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.3",
+    "@reduxjs/toolkit": "^2.2.3",
     "@types/react": "^18.0.32",
     "@types/react-bootstrap": "^0.32.32",
     "@types/react-dom": "^18.0.11",
@@ -13,8 +13,8 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
-    "redux": "^4.2.1"
+    "react-redux": "^9.1.0",
+    "redux": "^5.0.1"
   },
   "scripts": {
     "serve": "webpack-cli serve --mode=development --env development --open --hot",
@@ -36,32 +36,32 @@
   },
   "homepage": "https://github.com/rebel-l/ttrack_app#readme",
   "devDependencies": {
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.12.3",
     "@types/webpack": "^5.28.1",
     "@types/webpack-dev-server": "^4.7.2",
-    "@typescript-eslint/eslint-plugin": "^6.2.1",
-    "@typescript-eslint/parser": "^6.2.1",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.37.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-redux": "^4.0.0",
-    "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
     "html-webpack-plugin": "^5.5.0",
     "sass": "^1.60.0",
-    "sass-loader": "^13.2.2",
+    "sass-loader": "^14.1.1",
     "style-loader": "^3.3.2",
-    "stylelint": "^15.4.0",
-    "stylelint-config-sass-guidelines": "^10.0.0",
-    "stylelint-config-standard": "^34.0.0",
-    "stylelint-scss": "^5.0.1",
+    "stylelint": "^16.3.1",
+    "stylelint-config-sass-guidelines": "^11.1.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-scss": "^6.2.1",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths-webpack-plugin": "^4.0.1",
     "typescript": "^5.0.3",
     "webpack": "^5.77.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.2"
+    "webpack-dev-server": "^5.0.4"
   }
 }

@@ -4,7 +4,7 @@ import { Break, Work } from "../../models/Reason";
 import { Button, Form } from "react-bootstrap";
 import { clone, TimeLogs } from "../../models/TimeLogs";
 import { loadByDateRange, LoadByDateRangeFunc, save, SaveFunc } from "../../service/timelogs";
-import { selectTimeLogs } from "../../redux/timelog/timelogs";
+import { selectTimeLogs } from "../../redux/timelogs";
 
 import { Home, Locations } from "../../models/Location";
 import React from "react";

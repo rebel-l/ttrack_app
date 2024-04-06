@@ -6,6 +6,7 @@ import { useState } from "react";
 import Absence from "./absence/Absence";
 import Player from "./player/Player";
 import Notification from "./Notification";
+import Reports from "./reports/Reports";
 
 
 const App: React.FC = () => {
@@ -22,6 +23,9 @@ const App: React.FC = () => {
     case "#absence":
         body = <Absence />;
         break;
+    case "#reports":
+        body = <Reports />
+        break;
     }
 
     return (
@@ -32,6 +36,9 @@ const App: React.FC = () => {
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link eventKey="#absence">Absence</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="#reports">Reports</Nav.Link>
                 </Nav.Item>
             </Nav>
             <Notification />

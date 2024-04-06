@@ -1,8 +1,7 @@
-import axios from "axios";
-
-import { loadedByDateRange, saved } from "../redux/timelog/timelogs";
+import { loadedByDateRange, saved } from "../redux/timelogs";
 import { errorAction, successAction } from "../redux/notifcations";
 import { TimeLog } from "../models/TimeLog";
+import { client } from "./client";
 
 export interface SaveFunc {
     (payload: TimeLog, showSuccess?: boolean): void;
@@ -11,12 +10,6 @@ export interface SaveFunc {
 export interface LoadByDateRangeFunc {
     (start: string, stop: string): void;
 }
-
-// TODO: create base url dynamic
-const client = axios.create({
-    // baseURL: "http://localhost:3000", // development
-    baseURL: "/api" // production
-});
 
 // eslint-disable-next-line one-var
 export const

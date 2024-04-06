@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
-import { TimeLog } from "../../models/TimeLog";
-import { TimeLogs } from "../../models/TimeLogs";
+import type { RootState } from "./store";
+import { TimeLog } from "../models/TimeLog";
+import { TimeLogs } from "../models/TimeLogs";
 
 interface TimeLogsState {
     value: TimeLogs

@@ -4,23 +4,38 @@ import { Form } from "react-bootstrap";
 
 import React from "react";
 import { connect, InferableComponentEnhancerWithProps } from "react-redux";
-import { loadReportOptions } from "../../service/reports";
+import { List, Options } from "../../models/Reports";
+import { loadReportOptions, loadReport, LoadReportOptionsFunc, LoadReportFunc } from "../../service/reports";
 import { RootState } from "../../redux/store";
-import { selectOptions } from "../../redux/reports";
+import { selectOptions, selectList } from "../../redux/reports";
+import ListComp from "./List";
+
 
 const
     labelOptions: string = "Available Years",
+    labelDefaultOption: string = "-- select a year --",
     defaultOption = (
-        <option key={0} className={"inactive"}>-- select a year --</option>
+        <option key={0} className={"inactive"}>{labelDefaultOption}</option>
     ),
     mapDispatchToProps = {
         loadReportOptions,
+        loadReport,
     },
-    mapStateToProps = (state: RootState) => ({options: selectOptions(state)}),
+    mapStateToProps = (state: RootState) => ({
+        options: selectOptions(state),
+        list: selectList(state)
+    }),
     connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
-class ReportsComp extends React.Component<any, any> {
-    constructor (props: any) {
+interface IProps {
+    readonly loadReportOptions: LoadReportOptionsFunc;
+    readonly loadReport: LoadReportFunc;
+    readonly options: Options;
+    readonly list: List;
+}
+
+class ReportsComp extends React.Component<IProps, any> {
+    constructor (props: IProps) {
         super(props);
 
         // Bindings
@@ -36,11 +51,17 @@ class ReportsComp extends React.Component<any, any> {
     }
 
     handleOption (elem: React.FormEvent<HTMLSelectElement>): void {
-        console.log(elem.currentTarget.value);
+        const year = elem.currentTarget.value;
+
+        if(year === labelDefaultOption) {
+            return
+        }
+
+        this.props.loadReport(+year);
     }
 
     render () {
-        const { options } = this.props;
+        const { options, list } = this.props;
 
         const reportOptions: React.ReactNode[] = [];
         reportOptions.push(defaultOption);
@@ -62,6 +83,7 @@ class ReportsComp extends React.Component<any, any> {
                         {reportOptions}
                     </Form.Select>
                 </div>
+                <ListComp list={list} />
             </div>
         );
     }

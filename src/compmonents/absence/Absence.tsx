@@ -19,9 +19,7 @@ interface IState {
 const
     labelReason = "Reason",
     labelAdd = "Add",
-    mapDispatchToProps = {
-        save,
-    },
+    mapDispatchToProps = { save },
     connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);
 
 class AbsenceComp extends React.Component<any, IState> {
@@ -42,7 +40,10 @@ class AbsenceComp extends React.Component<any, IState> {
 
         // Initial state
         this.state = {
-            range: [new Date(), new Date()] as Absence,
+            range: [
+                new Date(),
+                new Date(),
+            ] as Absence,
             reason: Vacation,
             reasonOptions,
         };
@@ -69,7 +70,7 @@ class AbsenceComp extends React.Component<any, IState> {
         this.setState({ reason: elem.currentTarget.value });
     }
 
-    onChange (value: Absence)  {
+    onChange (value: Absence) {
         this.setState({ range: value });
     }
 
@@ -91,13 +92,16 @@ class AbsenceComp extends React.Component<any, IState> {
                     </Form.Select>
                 </div>
                 <div>
-                    <DateRangePicker format={"dd.MM.y"} onChange={this.onChange} value={this.state.range} />
+                    <DateRangePicker format="dd.MM.y"
+                        onChange={this.onChange}
+                        value={this.state.range}
+                    />
                 </div>
                 <div className="justify-content-center">
                     <Button
                         onClick={this.handleAdd}
                         size="lg"
-                        variant={"primary"}
+                        variant="primary"
                     >
                         {labelAdd}
                     </Button>

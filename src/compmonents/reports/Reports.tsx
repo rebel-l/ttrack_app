@@ -14,16 +14,19 @@ import ListComp from "./List";
 const
     labelOptions: string = "Available Years",
     labelDefaultOption: string = "-- select a year --",
-    defaultOption = (
-        <option key={0} className={"inactive"}>{labelDefaultOption}</option>
-    ),
+    defaultOption =
+        (<option key={0}
+            className="inactive"
+        >
+            {labelDefaultOption}
+         </option>),
     mapDispatchToProps = {
         loadReportOptions,
         loadReport,
     },
     mapStateToProps = (state: RootState) => ({
         options: selectOptions(state),
-        list: selectList(state)
+        list: selectList(state),
     }),
     connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
@@ -53,17 +56,18 @@ class ReportsComp extends React.Component<IProps, any> {
     handleOption (elem: React.FormEvent<HTMLSelectElement>): void {
         const year = elem.currentTarget.value;
 
-        if(year === labelDefaultOption) {
-            return
+        if (year === labelDefaultOption) {
+            return;
         }
 
-        this.props.loadReport(+year);
+        this.props.loadReport(Number(year));
     }
 
     render () {
-        const { options, list } = this.props;
+        const { options, list } = this.props,
 
-        const reportOptions: React.ReactNode[] = [];
+            reportOptions: React.ReactNode[] = [];
+
         reportOptions.push(defaultOption);
         options.forEach((value: number) => {
             const item = (
@@ -78,8 +82,12 @@ class ReportsComp extends React.Component<IProps, any> {
         return (
             <div className="justify-content-center">
                 <div>
-                    <span>{labelOptions}</span>
-                    <Form.Select size="sm" onChange={this.handleOption}>
+                    <span>
+                        {labelOptions}
+                    </span>
+                    <Form.Select size="sm"
+                        onChange={this.handleOption}
+                    >
                         {reportOptions}
                     </Form.Select>
                 </div>

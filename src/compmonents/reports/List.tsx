@@ -3,10 +3,10 @@ import "./List.scss";
 import React from "react";
 import { Table } from "react-bootstrap";
 
-import { List} from "../../models/Reports";
+import { List } from "../../models/Reports";
 
 interface IProps {
-    list: List
+    readonly list: List
 }
 
 export default class ListComp extends React.Component<IProps, any> {
@@ -17,22 +17,41 @@ export default class ListComp extends React.Component<IProps, any> {
     render () {
         const { list } = this.props;
 
-        if(!list) {
-            return (null);
+        if (!list) {
+            return null;
         }
 
         return (
             <div>
-                <h2>{list.Year}: {list.FirstDayOfYear.toLocaleString()} / {list.LastDayOfYear.toLocaleString()}</h2>
+                <h2>
+                    {list.Year}
+                    :
+                    {" "}
+                    {list.FirstDayOfYear.toLocaleString()}
+                    {" "}
+                    /
+                    {" "}
+                    {list.LastDayOfYear.toLocaleString()}
+                </h2>
                 <Table className="table small">
-                    <tr>
-                        <th>Number of Days in the Year</th>
-                        <td>{list.DaysInYear}</td>
-                    </tr>
-                    <tr>
-                        <th>Number of Work Days in the Year</th>
-                        <td>{list.WorkDaysInYear}</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th>
+                                Number of Days in the Year
+                            </th>
+                            <td>
+                                {list.DaysInYear}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Number of Work Days in the Year
+                            </th>
+                            <td>
+                                {list.WorkDaysInYear}
+                            </td>
+                        </tr>
+                    </tbody>
                 </Table>
             </div>
         );

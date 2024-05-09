@@ -11,21 +11,21 @@ export interface LoadReportFunc {
 }
 
 export const loadReportOptions: LoadReportOptionsFunc = () => async (dispatch) => {
-    client.get(`/reports/options`)
-        .then((response) => {
+    client.get("/reports/options").
+        then((response) => {
             dispatch(options(response.data));
-        })
-        .catch((e) => {
-           dispatch(errorAction(e.message));
+        }).
+        catch((e) => {
+            dispatch(errorAction(e.message));
         });
 };
 
 export const loadReport: LoadReportFunc = (year: number) => async (dispatch) => {
-    client.get(`/reports/${year}`)
-        .then((response) => {
+    client.get(`/reports/${year}`).
+        then((response) => {
             dispatch(loadedByYear(response.data));
-        })
-        .catch((e) => {
+        }).
+        catch((e) => {
             dispatch(errorAction(e.message));
         });
 };

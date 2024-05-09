@@ -21,19 +21,22 @@ export const
             errorAction: (state, action : PayloadAction<string>) => {
                 state.push({
                     message: action.payload,
-                    type: error
+                    type: error,
                 });
+
                 return state;
             },
             resetAction: (state) => {
                 state = initialState;
+
                 return state;
             },
             successAction: (state, action : PayloadAction<string>) => {
                 state.push({
                     message: action.payload,
-                    type: success
+                    type: success,
                 });
+
                 return state;
             },
         },

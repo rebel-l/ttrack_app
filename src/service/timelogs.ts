@@ -14,24 +14,24 @@ export interface LoadByDateRangeFunc {
 // eslint-disable-next-line one-var
 export const
     save: SaveFunc = (payload: TimeLog, showSuccess: boolean) => async (dispatch) => {
-        client.put(`/timgelogs`, payload)
-            .then((response) => {
+        client.put("/timgelogs", payload).
+            then((response) => {
                 dispatch(saved(response.data));
                 if (showSuccess) {
                     dispatch(successAction(response.data.ID));
                 }
-            })
-            .catch ((e) => {
+            }).
+            catch((e) => {
                 dispatch(errorAction(e.message));
             });
     },
 
     loadByDateRange: LoadByDateRangeFunc = (start: string, stop: string) => async (dispatch) => {
-        client.get(`/timelogs/${start}/${stop}`)
-            .then((response) => {
-                dispatch(loadedByDateRange(response.data))
-            })
-            .catch ((e) => {
+        client.get(`/timelogs/${start}/${stop}`).
+            then((response) => {
+                dispatch(loadedByDateRange(response.data));
+            }).
+            catch((e) => {
                 dispatch(errorAction(e.message));
             });
     };

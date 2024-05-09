@@ -18,12 +18,10 @@ interface IProps {
 
 const
     reset: ResetFunc = () => async (dispatch) => {
-        dispatch(resetAction())
+        dispatch(resetAction());
     },
-    mapStateToProps = (state: RootState) => ({ notifications: selectNotifications(state)}),
-    mapDispatchToProps = {
-        reset
-    },
+    mapStateToProps = (state: RootState) => ({ notifications: selectNotifications(state) }),
+    mapDispatchToProps = { reset },
     connector: InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 class NotificationComp extends React.Component<IProps> {
@@ -32,11 +30,12 @@ class NotificationComp extends React.Component<IProps> {
 
         this.handleClose = this.handleClose.bind(this);
     }
+
     shouldComponentUpdate () : boolean {
         return true;
     }
 
-    handleClose() {
+    handleClose () {
         this.props.reset();
     }
 
@@ -47,11 +46,14 @@ class NotificationComp extends React.Component<IProps> {
             return;
         }
 
-        let badges = [];
+        const badges = [];
+
         notifications.forEach((notification: Notification, index: number) => {
             badges.push((
                 <div>
-                    <Badge bg={notification.type} key={index}>
+                    <Badge bg={notification.type}
+                        key={index}
+                    >
                         {notification.message}
                     </Badge>
                 </div>
@@ -59,8 +61,12 @@ class NotificationComp extends React.Component<IProps> {
         });
 
         return (
-            <div className={"errors"}>
-                <Button variant={"link"} onClick={this.handleClose}>Close All</Button>
+            <div className="errors">
+                <Button variant="link"
+                    onClick={this.handleClose}
+                >
+                    Close All
+                </Button>
                 {badges}
             </div>
         );

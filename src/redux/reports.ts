@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TimeLogs } from "../models/TimeLogs";
 import type { RootState } from "./store";
 import { List, Options } from "../models/Reports";
 
@@ -8,7 +7,10 @@ interface ReportsState {
     list: List
 }
 
-const initialState: ReportsState = { options: [] as Options, list: null };
+const initialState: ReportsState = {
+    options: [] as Options,
+    list: null,
+};
 
 // eslint-disable-next-line one-var
 export const
@@ -30,6 +32,6 @@ export const
             },
         },
     }),
-    { loadedByYear, options} = reportsSlice.actions;
+    { loadedByYear, options } = reportsSlice.actions;
 
 export default reportsSlice.reducer;

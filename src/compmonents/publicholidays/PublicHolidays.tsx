@@ -1,42 +1,93 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { connect, InferableComponentEnhancerWithProps } from "react-redux";
-import { PublicHolidays } from "../../models/PublicHolidays";
-import { selectPreview } from "../../redux/public-holidays";
+import { PublicHolidays, PublicHolidaysByYear } from "../../models/PublicHolidays";
+import { selectPreview } from "../../redux/api-feiertage";
+import { selectCurrent } from "../../redux/public-holidays";
 import { RootState } from "../../redux/store";
-import { loadPublicHolidays, LoadPublicHolidaysFunc } from "../../service/api-feiertage";
+import { loadApiFeiertage, LoadApiFeiertageFunc } from "../../service/api-feiertage";
+import { loadPublicHolidays, LoadPublicHolidaysFunc } from "../../service/publicholidays";
 import Preview from "./Preview";
 
 const
-    mapDispatchToProps = { loadPublicHolidays },
-    mapStateToProps = (state: RootState) => ({ preview: selectPreview(state) }),
+    mapDispatchToProps = { loadApiFeiertage: loadApiFeiertage, loadPublicHolidays: loadPublicHolidays },
+    mapStateToProps = (state: RootState) => ({ preview: selectPreview(state), current: selectCurrent(state) }),
     connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 interface IProps {
+    readonly loadApiFeiertage: LoadApiFeiertageFunc;
     readonly loadPublicHolidays: LoadPublicHolidaysFunc;
     readonly preview: PublicHolidays;
+    readonly current: PublicHolidaysByYear;
 }
 
-class PublicHolidaysComp extends React.Component<IProps, any> {
+interface IState {
+    previewYear: number;
+}
+
+class PublicHolidaysComp extends React.Component<IProps, IState> {
     constructor (props: IProps) {
         super(props);
 
         this.handleLoad = this.handleLoad.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
-    handleLoad () {
-        this.props.loadPublicHolidays(2025);
+    componentDidMount (): void {
+        this.props.loadPublicHolidays();
+    }
+
+    handleLoad (event) {
+        this.props.loadApiFeiertage(event.target.value);
+        this.setState({previewYear: event.target.value});
+    }
+
+    handleSave (event) {
+        console.log(event.target.value);
     }
 
     render () {
-        const { preview } = this.props;
+        const { preview, current } = this.props;
+
+        let elements = [];
+        Object.keys(current).forEach((key) => {
+            const list = current[key];
+            console.log(key, list);
+
+            if(list.length ===0) {
+                elements.push((
+                    <div key={`d-${key}`}>
+                        <h2 key={`h-${key}`}>{key}</h2>
+                        <Button key={`b-${key}`} value={key} onClick={this.handleLoad}>Load</Button>
+                    </div>
+                ));
+            } else {
+                elements.push((
+                    <div>
+                        <h2 key={`h-${key}`}>{key}</h2>
+                        <Preview key={`p-${key}`} preview={list} />
+                    </div>
+                ));
+            }
+
+        });
+
+        let previewElem = null;
+        if(preview.length > 0) {
+            previewElem = (
+                <div>
+                    <h1>Preview</h1>
+                    <Preview preview={preview}/>
+                    <Button value={this.state.previewYear} onClick={this.handleSave}>Save</Button>
+                </div>
+            )
+        }
 
         return (
             <div>
-                <Button onClick={this.handleLoad} >
-                    Load
-                </Button>
-                <Preview preview={preview} />
+            <h1>Imported Public Holidays</h1>
+                {elements}
+                {previewElem}
             </div>
         );
     }

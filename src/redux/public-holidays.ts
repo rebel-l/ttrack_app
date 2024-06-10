@@ -1,55 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ApiFeiertageResponse } from "../models/ApiFeiertage";
-import { PublicHolidays } from "../models/PublicHolidays";
+import MapifyTs from "mapify-ts";
+import { PublicHolidays, PublicHolidaysByYear } from "../models/PublicHolidays";
 import type { RootState } from "./store";
 
 interface PublicHolidaysState {
-    preview: PublicHolidays
+    preview: PublicHolidays;
+    current: string;
 }
 
-const initialState: PublicHolidaysState = { preview: [] as PublicHolidays };
+export const initialState: PublicHolidaysState = {
+    preview: [] as PublicHolidays,
+    current: MapifyTs.serialize(new Map<string, PublicHolidays> as PublicHolidaysByYear),
+};
 
 // eslint-disable-next-line one-var
 export const
-    selectPreview = (state: RootState) => state.publicHolidays.preview,
+    selectCurrent = (state: RootState) => MapifyTs.deserialize(state.publicHolidays.current),
     publicHolidaysSlice = createSlice({
-        name: "publicHolidays",
+        name: "publicHolidaysAction",
         initialState,
         reducers: {
-            apiFeiertageToPublicHolidays: (state, action: PayloadAction<ApiFeiertageResponse>) => {
-                state.preview = [] as PublicHolidays;
-
-                let year: number;
-
-                action.payload.feiertage.forEach((feiertag) => {
-                    if (feiertag.be === "1") {
-                        const date = new Date(feiertag.date);
-
-                        year = date.getFullYear();
-                        state.preview.push({
-                            Date: date.toISOString(),
-                            Name: feiertag.fname,
-                            HalfDay: false,
-                        });
-                    }
-                });
-
-                state.preview.push({
-                    Date: new Date(Date.UTC(year, 11, 24)).toISOString(),
-                    Name: "Heiligabend",
-                    HalfDay: true,
-                });
-
-                state.preview.push({
-                    Date: new Date(Date.UTC(year, 11, 31)).toISOString(),
-                    Name: "Silvester",
-                    HalfDay: true,
-                });
-
+            publicHolidaysAction: (state, action: PayloadAction<PublicHolidaysByYear>) => {
+                state.current = MapifyTs.serialize(action.payload)
                 return state;
             },
         },
     }),
-    { apiFeiertageToPublicHolidays } = publicHolidaysSlice.actions;
+    { publicHolidaysAction } = publicHolidaysSlice.actions;
 
 export default publicHolidaysSlice.reducer;

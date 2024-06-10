@@ -1,19 +1,18 @@
 import axios, { AxiosInstance } from "axios";
 import { errorAction } from "../redux/notifcations";
-import { apiFeiertageToPublicHolidays } from "../redux/public-holidays";
+import { apiFeiertageToPublicHolidaysAction } from "../redux/api-feiertage";
 
 
 const client: AxiosInstance = axios.create({ baseURL: "https://get.api-feiertage.de" });
 
-export interface LoadPublicHolidaysFunc {
+export interface LoadApiFeiertageFunc {
     (year: number): void;
 }
 
-export const loadPublicHolidays: LoadPublicHolidaysFunc = (year: number) => async (dispatch) => {
+export const loadApiFeiertage: LoadApiFeiertageFunc = (year: number) => async (dispatch) => {
     client.get(`?years=${year}&states=be`).
         then((response) => {
-        // Console.log(response.data)
-            dispatch(apiFeiertageToPublicHolidays(response.data));
+            dispatch(apiFeiertageToPublicHolidaysAction(response.data));
         }).
         catch((e) => {
             dispatch(errorAction(e.message));

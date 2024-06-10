@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import timeLogsReducer from "./timelogs";
 import notificationReducer from "./notifcations";
 import reportsReducer from "./reports";
+import apiFeiertageReducer from "./api-feiertage";
 import publicHolidaysReducer from "./public-holidays";
 
 
@@ -11,6 +12,7 @@ export const store = configureStore({
         notifications: notificationReducer,
         timeLogs: timeLogsReducer,
         reports: reportsReducer,
+        apiFeiertage: apiFeiertageReducer,
         publicHolidays: publicHolidaysReducer,
     },
 });

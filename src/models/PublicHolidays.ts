@@ -1,8 +1,10 @@
 export type PublicHoliday = {
     ID?: string;
-    Date: string;
+    Day: string;
     Name: string;
     HalfDay: boolean;
+    CreatedAt?: Date;
+    ModifiedAt?: Date;
 }
 
 export type PublicHolidays = PublicHoliday[];

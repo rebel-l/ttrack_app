@@ -23,7 +23,7 @@ export const
 
                         year = date.getFullYear();
                         state.preview.push({
-                            Date: date.toISOString(),
+                            Day: date.toISOString(),
                             Name: feiertag.fname,
                             HalfDay: false,
                         });
@@ -31,13 +31,13 @@ export const
                 });
 
                 state.preview.push({
-                    Date: new Date(Date.UTC(year, 11, 24)).toISOString(),
+                    Day: new Date(Date.UTC(year, 11, 24)).toISOString(),
                     Name: "Heiligabend",
                     HalfDay: true,
                 });
 
                 state.preview.push({
-                    Date: new Date(Date.UTC(year, 11, 31)).toISOString(),
+                    Day: new Date(Date.UTC(year, 11, 31)).toISOString(),
                     Name: "Silvester",
                     HalfDay: true,
                 });

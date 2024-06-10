@@ -37,7 +37,7 @@ class Preview extends React.Component<IProps> {
                     {preview.map((publicHoliday, index) => (
                         <tr key={`row-${index}`}>
                             <td key={`date-${index}`}>
-                                {publicHoliday.Date}
+                                {publicHoliday.Day}
                             </td>
                             <td key={`name-${index}`}>
                                 {publicHoliday.Name}

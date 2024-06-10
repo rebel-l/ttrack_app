@@ -6,17 +6,23 @@ import { selectPreview } from "../../redux/api-feiertage";
 import { selectCurrent } from "../../redux/public-holidays";
 import { RootState } from "../../redux/store";
 import { loadApiFeiertage, LoadApiFeiertageFunc } from "../../service/api-feiertage";
-import { loadPublicHolidays, LoadPublicHolidaysFunc } from "../../service/publicholidays";
+import {
+    loadPublicHolidays,
+    LoadPublicHolidaysFunc,
+    savePublicHolidays,
+    SavePublicHolidaysFunc,
+} from "../../service/publicholidays";
 import Preview from "./Preview";
 
 const
-    mapDispatchToProps = { loadApiFeiertage: loadApiFeiertage, loadPublicHolidays: loadPublicHolidays },
+    mapDispatchToProps = { loadApiFeiertage: loadApiFeiertage, loadPublicHolidays: loadPublicHolidays, savePublicHolidays: savePublicHolidays },
     mapStateToProps = (state: RootState) => ({ preview: selectPreview(state), current: selectCurrent(state) }),
     connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 interface IProps {
     readonly loadApiFeiertage: LoadApiFeiertageFunc;
     readonly loadPublicHolidays: LoadPublicHolidaysFunc;
+    readonly savePublicHolidays: SavePublicHolidaysFunc;
     readonly preview: PublicHolidays;
     readonly current: PublicHolidaysByYear;
 }
@@ -43,7 +49,7 @@ class PublicHolidaysComp extends React.Component<IProps, IState> {
     }
 
     handleSave (event) {
-        console.log(event.target.value);
+        this.props.savePublicHolidays(this.props.preview);
     }
 
     render () {
@@ -52,7 +58,7 @@ class PublicHolidaysComp extends React.Component<IProps, IState> {
         let elements = [];
         Object.keys(current).forEach((key) => {
             const list = current[key];
-            console.log(key, list);
+            console.log(key, list); // TODO: remove
 
             if(list.length ===0) {
                 elements.push((
@@ -76,7 +82,7 @@ class PublicHolidaysComp extends React.Component<IProps, IState> {
         if(preview.length > 0) {
             previewElem = (
                 <div>
-                    <h1>Preview</h1>
+                    <h1>{this.state.previewYear} - Preview</h1>
                     <Preview preview={preview}/>
                     <Button value={this.state.previewYear} onClick={this.handleSave}>Save</Button>
                 </div>
@@ -87,6 +93,7 @@ class PublicHolidaysComp extends React.Component<IProps, IState> {
             <div>
             <h1>Imported Public Holidays</h1>
                 {elements}
+                <hr />
                 {previewElem}
             </div>
         );

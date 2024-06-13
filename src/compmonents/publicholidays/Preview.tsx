@@ -14,8 +14,8 @@ class Preview extends React.Component<IProps> {
     render () {
         const { preview } = this.props;
 
-        if(preview.length === 0) {
-            return ("");
+        if (preview.length === 0) {
+            return "";
         }
 
         return (

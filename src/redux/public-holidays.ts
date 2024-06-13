@@ -10,7 +10,7 @@ interface PublicHolidaysState {
 
 export const initialState: PublicHolidaysState = {
     preview: [] as PublicHolidays,
-    current: MapifyTs.serialize(new Map<string, PublicHolidays> as PublicHolidaysByYear),
+    current: MapifyTs.serialize(new Map<string, PublicHolidays>() as PublicHolidaysByYear),
 };
 
 // eslint-disable-next-line one-var
@@ -21,11 +21,22 @@ export const
         initialState,
         reducers: {
             publicHolidaysAction: (state, action: PayloadAction<PublicHolidaysByYear>) => {
-                state.current = MapifyTs.serialize(action.payload)
+                state.current = MapifyTs.serialize(action.payload);
+                return state;
+            },
+            mergeHolidayAction: (state, action: PayloadAction<PublicHolidaysByYear>) => {
+                const current = MapifyTs.deserialize(state.current);
+
+                for (const key in action.payload) {
+                    current[key] = action.payload[key];
+                }
+
+                state.current = MapifyTs.serialize(current);
+
                 return state;
             },
         },
     }),
-    { publicHolidaysAction } = publicHolidaysSlice.actions;
+    { publicHolidaysAction, mergeHolidayAction } = publicHolidaysSlice.actions;
 
 export default publicHolidaysSlice.reducer;

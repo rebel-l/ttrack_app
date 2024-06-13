@@ -15,8 +15,15 @@ import {
 import Preview from "./Preview";
 
 const
-    mapDispatchToProps = { loadApiFeiertage: loadApiFeiertage, loadPublicHolidays: loadPublicHolidays, savePublicHolidays: savePublicHolidays },
-    mapStateToProps = (state: RootState) => ({ preview: selectPreview(state), current: selectCurrent(state) }),
+    mapDispatchToProps = {
+        loadApiFeiertage,
+        loadPublicHolidays,
+        savePublicHolidays,
+    },
+    mapStateToProps = (state: RootState) => ({
+        preview: selectPreview(state),
+        current: selectCurrent(state),
+    }),
     connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 interface IProps {
@@ -45,53 +52,74 @@ class PublicHolidaysComp extends React.Component<IProps, IState> {
 
     handleLoad (event) {
         this.props.loadApiFeiertage(event.target.value);
-        this.setState({previewYear: event.target.value});
+        this.setState({ previewYear: event.target.value });
     }
 
-    handleSave (event) {
+    handleSave () {
         this.props.savePublicHolidays(this.props.preview);
     }
 
     render () {
-        const { preview, current } = this.props;
+        const { preview, current } = this.props,
 
-        let elements = [];
+            elements = [];
+
         Object.keys(current).forEach((key) => {
             const list = current[key];
-            console.log(key, list); // TODO: remove
 
-            if(list.length ===0) {
+            if (list.length === 0) {
                 elements.push((
                     <div key={`d-${key}`}>
-                        <h2 key={`h-${key}`}>{key}</h2>
-                        <Button key={`b-${key}`} value={key} onClick={this.handleLoad}>Load</Button>
+                        <h2 key={`h-${key}`}>
+                            {key}
+                        </h2>
+                        <Button key={`b-${key}`}
+                            value={key}
+                            onClick={this.handleLoad}
+                        >
+                            Load
+                        </Button>
                     </div>
                 ));
             } else {
                 elements.push((
-                    <div>
-                        <h2 key={`h-${key}`}>{key}</h2>
-                        <Preview key={`p-${key}`} preview={list} />
+                    <div key={`d-${key}`}>
+                        <h2 key={`h-${key}`}>
+                            {key}
+                        </h2>
+                        <Preview key={`p-${key}`}
+                            preview={list}
+                        />
                     </div>
                 ));
             }
-
         });
 
         let previewElem = null;
-        if(preview.length > 0) {
+
+        if (preview.length > 0) {
             previewElem = (
                 <div>
-                    <h1>{this.state.previewYear} - Preview</h1>
-                    <Preview preview={preview}/>
-                    <Button value={this.state.previewYear} onClick={this.handleSave}>Save</Button>
+                    <h1>
+                        {this.state.previewYear}
+                        {" "}
+                        - Preview
+                    </h1>
+                    <Preview preview={preview} />
+                    <Button value={this.state.previewYear}
+                        onClick={this.handleSave}
+                    >
+                        Save
+                    </Button>
                 </div>
-            )
+            );
         }
 
         return (
             <div>
-            <h1>Imported Public Holidays</h1>
+                <h1>
+                    Imported Public Holidays
+                </h1>
                 {elements}
                 <hr />
                 {previewElem}

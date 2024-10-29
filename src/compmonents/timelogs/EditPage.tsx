@@ -2,12 +2,24 @@ import React from "react";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import {Absence} from "../../models/Absence";
+import {loadByDateRange, LoadByDateRangeFunc} from "../../service/timelogs";
+import { sqlDate } from "../../libs/DateTime";
+import {connect, InferableComponentEnhancerWithProps} from "react-redux";
 
 interface IState {
     range: Absence;
  }
 
-class EditPage extends React.Component<any, IState> {
+interface IProps {
+    readonly loadByDateRange: LoadByDateRangeFunc;
+}
+
+const  mapDispatchToProps = {
+    loadByDateRange,
+},
+    connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);
+
+class EditPage extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 
@@ -16,7 +28,7 @@ class EditPage extends React.Component<any, IState> {
             range: [
                 new Date(),
                 new Date(),
-            ]
+            ] as Absence
         }
 
         // bindings
@@ -25,7 +37,7 @@ class EditPage extends React.Component<any, IState> {
 
     onChange(value: Absence) {
         this.setState({range: value});
-        console.log("Hello", value);
+        this.props.loadByDateRange(sqlDate(value[0]), sqlDate(value[1]));
     }
 
     render() {
@@ -39,4 +51,4 @@ class EditPage extends React.Component<any, IState> {
     }
 }
 
-export default EditPage;
+export default connector(EditPage);

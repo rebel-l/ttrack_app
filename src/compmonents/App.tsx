@@ -8,6 +8,7 @@ import Player from "./player/Player";
 import Notification from "./Notification";
 import PublicHolidays from "./publicholidays/PublicHolidays";
 import Reports from "./reports/Reports";
+import EditPage from "./timelogs/EditPage";
 
 
 const App: React.FC = () => {
@@ -23,6 +24,10 @@ const App: React.FC = () => {
     switch (key) {
     case "#player":
         body = <Player />;
+        break;
+
+    case "#editpage":
+        body = <EditPage />;
         break;
 
     case "#absence":
@@ -47,6 +52,11 @@ const App: React.FC = () => {
                 <Nav.Item>
                     <Nav.Link eventKey="#player">
                         Player
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="#editpage">
+                        Edit Time Logs
                     </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>

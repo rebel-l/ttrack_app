@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 import { TimeLogs } from "../../models/TimeLogs";
 
 interface IProps {
@@ -20,8 +20,19 @@ const numDigits = 2,
     };
 
 class List extends React.Component<IProps> {
+    constructor(props: IProps) {
+        super(props);
+
+        // bindings
+        this.onEdit = this.onEdit.bind(this);
+    }
+
     shouldComponentUpdate () : boolean {
         return true;
+    }
+
+    onEdit(event) {
+        console.log(event.currentTarget.value);
     }
 
     render () : React.ReactNode { // eslint-disable-line max-lines-per-function
@@ -46,6 +57,7 @@ class List extends React.Component<IProps> {
                         <th scope="col">
                             Duration
                         </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,6 +98,11 @@ class List extends React.Component<IProps> {
                                 </td>
                                 <td key={`duration-${index}`}>
                                     {duration}
+                                </td>
+                                <td>
+                                    <Button value={timeLog.ID} onClick={this.onEdit}>
+                                        edit
+                                    </Button>
                                 </td>
                             </tr>
                         );

@@ -5,6 +5,10 @@ import {Absence} from "../../models/Absence";
 import {loadByDateRange, LoadByDateRangeFunc} from "../../service/timelogs";
 import { sqlDate } from "../../libs/DateTime";
 import {connect, InferableComponentEnhancerWithProps} from "react-redux";
+import {RootState} from "../../redux/store";
+import {selectTimeLogs} from "../../redux/timelogs";
+import {TimeLogs} from "../../models/TimeLogs";
+import List from "../list/List";
 
 interface IState {
     range: Absence;
@@ -12,12 +16,14 @@ interface IState {
 
 interface IProps {
     readonly loadByDateRange: LoadByDateRangeFunc;
+    readonly timeLogs: TimeLogs;
 }
 
 const  mapDispatchToProps = {
-    loadByDateRange,
-},
-    connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);
+        loadByDateRange,
+    },
+    mapStateToProps = (state: RootState) => ({ timeLogs: selectTimeLogs(state) }),
+    connector : InferableComponentEnhancerWithProps<any, any> = connect(mapStateToProps, mapDispatchToProps);
 
 class EditPage extends React.Component<IProps, IState> {
     constructor(props: any) {
@@ -41,11 +47,14 @@ class EditPage extends React.Component<IProps, IState> {
     }
 
     render() {
+        const { timeLogs } = this.props;
+
         return (
             <div className="justify-content-center">
                 <div>
                     <DateRangePicker format="dd.MM.y" onChange={this.onChange} value={this.state.range}/>
                 </div>
+                <List timeLogs={timeLogs} />
             </div>
         );
     }

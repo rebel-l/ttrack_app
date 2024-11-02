@@ -1,5 +1,6 @@
 import React from "react";
 import {TimeLog} from "../../models/TimeLog";
+import {Form} from "react-bootstrap";
 
 interface IProps {
     timeLog: TimeLog;
@@ -14,7 +15,9 @@ class Edit extends React.Component<IProps, any>{
         return (
             <div>
                 <h1>Edit</h1>
-                <p>{this.props.timeLog.ID}</p>
+                <Form>
+                    <label>ID:</label><input value={this.props.timeLog.ID} readOnly={true}/>
+                </Form>
             </div>
         );
     }

@@ -118,7 +118,7 @@ class List extends React.Component<IProps, IState> {
                         })}
                     </tbody>
                 </Table>
-                {timeLogs.map((timeLog, index) => {
+                {timeLogs.map((timeLog) => {
                     if (this.state.edit === timeLog.ID) {
                         return (<Edit timeLog={timeLog} />)
                     }

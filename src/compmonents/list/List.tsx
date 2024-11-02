@@ -1,3 +1,5 @@
+import "./List.scss";
+
 import React from "react";
 import {Button, Table} from "react-bootstrap";
 import { TimeLogs } from "../../models/TimeLogs";
@@ -22,15 +24,17 @@ const numDigits = 2,
         }
 
         return val;
-    };
+    },
+    initialState = {edit: ""} as IState;
 
 class List extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+    constructor(props: IProps, state = initialState) {
         super(props);
 
-        this.state = {edit: ""} as IState;
+        this.state = state;
 
         // bindings
+        this.onClose = this.onClose.bind(this);
         this.onEdit = this.onEdit.bind(this);
     }
 
@@ -40,6 +44,10 @@ class List extends React.Component<IProps, IState> {
 
     onEdit(event) {
         this.setState({edit: event.currentTarget.value});
+    }
+
+    onClose(){
+        this.setState(initialState);
     }
 
     render () : React.ReactNode { // eslint-disable-line max-lines-per-function
@@ -120,7 +128,12 @@ class List extends React.Component<IProps, IState> {
                 </Table>
                 {timeLogs.map((timeLog) => {
                     if (this.state.edit === timeLog.ID) {
-                        return (<Edit timeLog={timeLog} />)
+                        return (
+                            <div className={"popup"}>
+                                <Button onClick={this.onClose}>Close</Button>
+                                <Edit timeLog={timeLog} />
+                            </div>
+                        )
                     }
 
                     return ("");

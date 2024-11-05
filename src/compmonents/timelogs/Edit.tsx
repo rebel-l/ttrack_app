@@ -27,7 +27,7 @@ const copyTimeLog = (timeLog: TimeLog): TimeLog => {
 }
 
 class Edit extends React.Component<IProps, IState>{
-    constructor(props: IProps, state: IState) {
+    constructor(props: IProps) {
         super(props);
 
         const locationOptions: React.ReactNode[] = [];

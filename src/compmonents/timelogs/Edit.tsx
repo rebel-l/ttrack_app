@@ -4,6 +4,7 @@ import React from "react";
 import {TimeLog} from "../../models/TimeLog";
 import {Button, Form} from "react-bootstrap";
 import {Locations} from "../../models/Location";
+import {Reasons} from "../../models/Reason";
 
 interface IProps {
     timeLog: TimeLog;
@@ -11,6 +12,7 @@ interface IProps {
 
 interface IState {
     locationOptions: React.ReactNode[];
+    reasonOptions: React.ReactNode[];
     timeLog: TimeLog;
 }
 
@@ -31,8 +33,7 @@ class Edit extends React.Component<IProps, IState>{
         super(props);
 
         const locationOptions: React.ReactNode[] = [];
-
-        Locations.forEach((value: string) => {
+        Locations.forEach((value: string): void => {
             const item = (
                 <option key={value}>
                     {value}
@@ -42,46 +43,110 @@ class Edit extends React.Component<IProps, IState>{
             locationOptions.push(item);
         });
 
+        const reasonOptions: React.ReactNode[] = [];
+        Reasons.forEach((value: string): void => {
+            const item = (
+                <option key={value}>
+                    {value}
+                </option>
+            );
+
+            reasonOptions.push(item);
+        });
+
         // Initial state
         this.state = {
             locationOptions,
+            reasonOptions,
             timeLog: this.props.timeLog
         };
 
         // bindings
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLocation = this.handleLocation.bind(this);
+        this.handleReason = this.handleReason.bind(this);
+        this.handleStart = this.handleStart.bind(this);
+        this.handleStop = this.handleStop.bind(this);
     }
 
-    handleSubmit(event): void {
+    handleSubmit(event: any): void {
         event.preventDefault();
         console.log(this.state.timeLog);
     }
 
     handleLocation(elem: React.FormEvent<HTMLSelectElement>): void {
-        const {locationOptions} = this.state;
+        const {locationOptions, reasonOptions} = this.state;
+
         let timeLog = copyTimeLog(this.state.timeLog);
         timeLog.Location = elem.currentTarget.value;
 
         this.setState({
             locationOptions,
+            reasonOptions,
+            timeLog
+        })
+    }
+
+    handleReason(elem: React.FormEvent<HTMLSelectElement>): void {
+        const {locationOptions, reasonOptions} = this.state;
+
+        let timeLog = copyTimeLog(this.state.timeLog);
+        timeLog.Reason = elem.currentTarget.value;
+
+        this.setState({
+            locationOptions,
+            reasonOptions,
+            timeLog
+        })
+    }
+
+    handleStart(elem: React.FormEvent<HTMLInputElement>): void {
+        const {locationOptions, reasonOptions} = this.state;
+
+        let timeLog = copyTimeLog(this.state.timeLog);
+        timeLog.Start = elem.currentTarget.value;
+
+        this.setState({
+            locationOptions,
+            reasonOptions,
+            timeLog
+        })
+    }
+
+    handleStop(elem: React.FormEvent<HTMLInputElement>): void {
+        const {locationOptions, reasonOptions} = this.state;
+
+        let timeLog = copyTimeLog(this.state.timeLog);
+        timeLog.Stop = elem.currentTarget.value;
+
+        this.setState({
+            locationOptions,
+            reasonOptions,
             timeLog
         })
     }
 
     render() {
-        const { locationOptions } = this.state;
+        const { locationOptions, reasonOptions } = this.state;
 
         return (
             <div>
                 <h1>Edit</h1>
                 <Form onSubmit={this.handleSubmit}>
                     <label>ID:</label><input name={"id"} value={this.state.timeLog.ID} readOnly={true}/><br/>
-                    <label>Start:</label><input name={"start"} value={this.state.timeLog.Start}/><br/>
-                    <label>Stop:</label><input name={"stop"} value={this.state.timeLog.Stop}/><br/>
-                    <label>Reason:</label><input name={"reason"} value={this.state.timeLog.Reason}/><br/>
+                    <label>Start:</label><input name={"start"} value={this.state.timeLog.Start} onChange={this.handleStart}/><br/>
+                    <label>Stop:</label><input name={"stop"} value={this.state.timeLog.Stop} onChange={this.handleStop}/><br/>
+                    <label>Reason:</label><Form.Select
+                        name={"reason"}
+                        size={"sm"}
+                        defaultValue={this.state.timeLog.Reason}
+                        onChange={this.handleReason}
+                    >
+                        {reasonOptions}
+                    </Form.Select><br/>
                     <label>Location:</label><Form.Select
-                        size="sm"
+                        name={"location"}
+                        size={"sm"}
                         defaultValue={this.state.timeLog.Location}
                         onChange={this.handleLocation}
                     >

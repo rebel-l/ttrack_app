@@ -7,6 +7,10 @@ export interface SaveFunc {
     (payload: TimeLog, showSuccess?: boolean): void;
 }
 
+export interface DeleteFunc {
+    (id: string): void;
+}
+
 export interface LoadByDateRangeFunc {
     (start: string, stop: string): void;
 }
@@ -24,6 +28,19 @@ export const
             catch((e) => {
                 dispatch(errorAction(e.message));
             });
+    },
+
+    del: DeleteFunc = (id: string) => async (dispatch) => {
+        client.delete(`/timgelogs/${id}`).
+        then((response) => {
+            console.log(id, response);
+            // TODO: dispatch
+            //dispatch(saved(response.data));
+            //dispatch(successAction(response.data.ID));
+        }).
+        catch((e) => {
+            dispatch(errorAction(e.message));
+        });
     },
 
     loadByDateRange: LoadByDateRangeFunc = (start: string, stop: string) => async (dispatch) => {

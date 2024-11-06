@@ -4,9 +4,12 @@ import React from "react";
 import {Button, Table} from "react-bootstrap";
 import { TimeLogs } from "../../models/TimeLogs";
 import Edit from "../timelogs/Edit";
+import {DeleteFunc, del} from "../../service/timelogs";
+import {connect, InferableComponentEnhancerWithProps} from "react-redux";
 
 interface IProps {
-    readonly timeLogs: TimeLogs
+    readonly timeLogs: TimeLogs;
+    del: DeleteFunc;
 }
 
 interface IState {
@@ -25,7 +28,9 @@ const numDigits = 2,
 
         return val;
     },
-    initialState = {edit: ""} as IState;
+    initialState = {edit: ""} as IState,
+    mapDispatchToProps = {del},
+    connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);;
 
 class List extends React.Component<IProps, IState> {
     constructor(props: IProps, state = initialState) {
@@ -36,6 +41,7 @@ class List extends React.Component<IProps, IState> {
         // bindings
         this.onClose = this.onClose.bind(this);
         this.onEdit = this.onEdit.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
 
     shouldComponentUpdate () : boolean {
@@ -44,6 +50,10 @@ class List extends React.Component<IProps, IState> {
 
     onEdit(event) {
         this.setState({edit: event.currentTarget.value});
+    }
+
+    onDelete(event) {
+        this.props.del(event.currentTarget.value);
     }
 
     onClose(){
@@ -57,24 +67,25 @@ class List extends React.Component<IProps, IState> {
             <div>
                 <Table>
                     <thead>
-                        <tr>
-                            <th scope="col">
-                                Start
-                            </th>
-                            <th scope="col">
-                                Reason
-                            </th>
-                            <th scope="col">
-                                Stop
-                            </th>
-                            <th scope="col">
-                                Location
-                            </th>
-                            <th scope="col">
-                                Duration
-                            </th>
-                            <th></th>
-                        </tr>
+                    <tr>
+                        <th scope="col">
+                            Start
+                        </th>
+                        <th scope="col">
+                            Reason
+                        </th>
+                        <th scope="col">
+                            Stop
+                        </th>
+                        <th scope="col">
+                            Location
+                        </th>
+                        <th scope="col">
+                            Duration
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
                         {timeLogs.map((timeLog, index) => {
@@ -120,6 +131,11 @@ class List extends React.Component<IProps, IState> {
                                             Edit
                                         </Button>
                                     </td>
+                                    <td key={`delete-${index}`}>
+                                        <Button key={`delete-button-${index}`} value={timeLog.ID} onClick={this.onDelete}>
+                                            Delete
+                                        </Button>
+                                    </td>
                                 </tr>
                             );
                         })}
@@ -142,4 +158,4 @@ class List extends React.Component<IProps, IState> {
     }
 }
 
-export default List;
+export default connector(List);

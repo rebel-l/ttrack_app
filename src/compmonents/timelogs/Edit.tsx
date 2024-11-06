@@ -87,7 +87,7 @@ class Edit extends React.Component<IProps, IState>{
                     >
                         {locationOptions}
                     </Form.Select><br/>
-                    <Button type={"submit"} onClick={this.handleSubmit}>save</Button>
+                    <Button type={"submit"} onClick={this.handleSubmit}>Save</Button>
                 </Form>
             </div>
         );

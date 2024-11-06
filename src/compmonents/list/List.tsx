@@ -115,11 +115,10 @@ class List extends React.Component<IProps, IState> {
                                     <td key={`duration-${index}`}>
                                         {duration}
                                     </td>
-                                    <td>
-                                        <Button value={timeLog.ID} onClick={this.onEdit}>
-                                            edit
+                                    <td key={`edit-${index}`}>
+                                        <Button key={`edit-button-${index}`} value={timeLog.ID} onClick={this.onEdit}>
+                                            Edit
                                         </Button>
-
                                     </td>
                                 </tr>
                             );
@@ -129,7 +128,7 @@ class List extends React.Component<IProps, IState> {
                 {timeLogs.map((timeLog) => {
                     if (this.state.edit === timeLog.ID) {
                         return (
-                            <div className={"popup"}>
+                            <div key={"edit-popup"} className={"popup"}>
                                 <Button onClick={this.onClose}>Close</Button>
                                 <Edit timeLog={timeLog} />
                             </div>

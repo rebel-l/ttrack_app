@@ -77,7 +77,7 @@ class Edit extends React.Component<IProps, IState>{
 
     handleSubmit(event: any): void {
         event.preventDefault();
-        this.props.save(this.state.timeLog);
+        this.props.save(this.state.timeLog, true);
     }
 
     handleLocation(elem: React.FormEvent<HTMLSelectElement>): void {

@@ -5,9 +5,12 @@ import {TimeLog} from "../../models/TimeLog";
 import {Button, Form} from "react-bootstrap";
 import {Locations} from "../../models/Location";
 import {Reasons} from "../../models/Reason";
+import {save, SaveFunc} from "../../service/timelogs";
+import {connect, InferableComponentEnhancerWithProps} from "react-redux";
 
 interface IProps {
     timeLog: TimeLog;
+    readonly save: SaveFunc;
 }
 
 interface IState {
@@ -16,17 +19,20 @@ interface IState {
     timeLog: TimeLog;
 }
 
-const copyTimeLog = (timeLog: TimeLog): TimeLog => {
-    return {
-        ID: timeLog.ID,
-        Start: timeLog.Start,
-        Stop: timeLog.Stop,
-        Location: timeLog.Location,
-        Reason: timeLog.Reason,
-        CreatedAt: timeLog.CreatedAt,
-        ModifiedAt: timeLog.ModifiedAt
-    } as TimeLog
-}
+const
+    copyTimeLog = (timeLog: TimeLog): TimeLog => {
+        return {
+            ID: timeLog.ID,
+            Start: timeLog.Start,
+            Stop: timeLog.Stop,
+            Location: timeLog.Location,
+            Reason: timeLog.Reason,
+            CreatedAt: timeLog.CreatedAt,
+            ModifiedAt: timeLog.ModifiedAt
+        } as TimeLog
+    },
+    mapDispatchToProps = {save},
+    connector : InferableComponentEnhancerWithProps<any, any> = connect(null, mapDispatchToProps);
 
 class Edit extends React.Component<IProps, IState>{
     constructor(props: IProps) {
@@ -71,7 +77,7 @@ class Edit extends React.Component<IProps, IState>{
 
     handleSubmit(event: any): void {
         event.preventDefault();
-        console.log(this.state.timeLog);
+        this.props.save(this.state.timeLog);
     }
 
     handleLocation(elem: React.FormEvent<HTMLSelectElement>): void {
@@ -159,4 +165,4 @@ class Edit extends React.Component<IProps, IState>{
     }
 }
 
-export default Edit;
+export default connector(Edit);

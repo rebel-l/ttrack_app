@@ -37,6 +37,8 @@ const buttonVariant = (canCLick: boolean): string => {
 interface IState {
     location: string;
     locationOptions: React.ReactNode[];
+    start: string;
+    stop: string;
 }
 
 interface IProps {
@@ -62,9 +64,15 @@ class Player extends React.Component<IProps, IState> {
         });
 
         // Initial state
+        const
+            today = new Date(),
+            tomorrow = new Date(today.getTime() + Day);
+
         this.state = {
             location: Home,
             locationOptions,
+            start: sqlDate(today),
+            stop: sqlDate(tomorrow)
         };
 
         // Bindings
@@ -84,11 +92,8 @@ class Player extends React.Component<IProps, IState> {
     }
 
     componentDidMount (): void {
-        const
-            today = new Date(),
-            tomorrow = new Date(today.getTime() + Day);
-
-        this.props.loadByDateRange(sqlDate(today), sqlDate(tomorrow));
+        const {start, stop} = this.state;
+        this.props.loadByDateRange(start, stop);
     }
 
     handleBreak (): void {
@@ -180,7 +185,7 @@ class Player extends React.Component<IProps, IState> {
     }
 
     render (): React.ReactNode {
-        const { locationOptions } = this.state,
+        const { locationOptions, start, stop } = this.state,
             { timeLogs } = this.props;
 
         return (
@@ -221,7 +226,7 @@ class Player extends React.Component<IProps, IState> {
                 >
                     {labelStop}
                 </Button>
-                <List timeLogs={timeLogs} />
+                <List timeLogs={timeLogs} start={start} stop={stop} />
             </div>
         );
     }

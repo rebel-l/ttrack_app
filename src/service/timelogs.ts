@@ -8,7 +8,7 @@ export interface SaveFunc {
 }
 
 export interface DeleteFunc {
-    (id: string): void;
+    (id: string, start: string, stop: string): void;
 }
 
 export interface LoadByDateRangeFunc {
@@ -30,25 +30,26 @@ export const
             });
     },
 
-    del: DeleteFunc = (id: string) => async (dispatch) => {
-        client.delete(`/timgelogs/${id}`).
+    loadByDateRange: LoadByDateRangeFunc = (start: string, stop: string) => async (dispatch) => {
+        console.log("LOAD");
+        client.get(`/timelogs/${start}/${stop}`).
         then((response) => {
-            console.log(id, response);
-            // TODO: dispatch
-            //dispatch(saved(response.data));
-            //dispatch(successAction(response.data.ID));
+            dispatch(loadedByDateRange(response.data));
         }).
         catch((e) => {
             dispatch(errorAction(e.message));
         });
     },
 
-    loadByDateRange: LoadByDateRangeFunc = (start: string, stop: string) => async (dispatch) => {
-        client.get(`/timelogs/${start}/${stop}`).
+    del: DeleteFunc = (id: string, start: string, stop: string) => async (dispatch) => {
+        client.delete(`/timgelogs/${id}`).
+        then(() => {
+            client.get(`/timelogs/${start}/${stop}`).
             then((response) => {
                 dispatch(loadedByDateRange(response.data));
-            }).
-            catch((e) => {
-                dispatch(errorAction(e.message));
             });
+        }).
+        catch((e) => {
+            dispatch(errorAction(e.message));
+        });
     };

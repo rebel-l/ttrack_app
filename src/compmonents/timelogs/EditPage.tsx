@@ -47,14 +47,15 @@ class EditPage extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { timeLogs } = this.props;
+        const { timeLogs } = this.props,
+            {range} = this.state;
 
         return (
             <div className="justify-content-center">
                 <div>
                     <DateRangePicker format="dd.MM.y" onChange={this.onChange} value={this.state.range}/>
                 </div>
-                <List timeLogs={timeLogs} />
+                <List timeLogs={timeLogs} start={sqlDate(range[0])} stop={sqlDate(range[1])} />
             </div>
         );
     }

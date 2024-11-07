@@ -9,6 +9,8 @@ import {connect, InferableComponentEnhancerWithProps} from "react-redux";
 
 interface IProps {
     readonly timeLogs: TimeLogs;
+    readonly start: string;
+    readonly stop: string;
     del: DeleteFunc;
 }
 
@@ -53,7 +55,7 @@ class List extends React.Component<IProps, IState> {
     }
 
     onDelete(event) {
-        this.props.del(event.currentTarget.value);
+        this.props.del(event.currentTarget.value, this.props.start, this.props.stop);
     }
 
     onClose(){
